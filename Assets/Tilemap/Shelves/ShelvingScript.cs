@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class ShelvingScript : ScriptableObject
 {
-// ShelfGrid is used to determien where a product on the shelf is
+    // ShelfGrid is used to determien where a product on the shelf is
     // x refers to the x on the shelf, while y refers to the shelf its on.
     [System.Serializable]
     public struct ShelfGrid {
@@ -24,7 +24,7 @@ public class ShelvingScript : ScriptableObject
         }
     }
 
-    public TileBase[] tiles;
+    public TileBase[] tiless;
 
     //determines how max length of the shelf
     private int maxShelfX = 32;
@@ -81,6 +81,6 @@ public class ShelvingScript : ScriptableObject
     }
     public override string ToString()
     {
-        return this.name;
+        return "this.name";
     }
 }

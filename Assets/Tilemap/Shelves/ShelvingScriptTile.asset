@@ -12,3 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27dae34650ef01c45a4d643963770929, type: 3}
   m_Name: ShelvingScriptTile
   m_EditorClassIdentifier: 
+  tiless:
+  - {fileID: 11400000, guid: 14435b4119c8c1b46b55aae527ce1d02, type: 2}
+  maxShelfY: 5
+  inventoryCount: 0
+  isDirty: 0
+  shelfType: 

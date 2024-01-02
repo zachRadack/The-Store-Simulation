@@ -75,6 +75,7 @@ public class shelfTile : Tile
             }
         }
     }
+    
 
     public void setName(string name){
         this.name = name;

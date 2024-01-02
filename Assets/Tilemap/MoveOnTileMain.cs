@@ -15,7 +15,7 @@ public class MoveOnTileMain : MonoBehaviour
     Pathfinder<Vector3Int> pathfinder;
     public bool entityFollowsRightClick = false;
     
-    public ShelfManager shelfManager;
+    public MainShelvingManager MainShelvingManager;
 
     [System.Serializable]
     public struct TileAndMovementCost
@@ -71,23 +71,22 @@ public class MoveOnTileMain : MonoBehaviour
     void Update()
     {
         if(entityFollowsRightClick){
-        if (Input.GetMouseButtonDown(1) )
-        {
-            var currentCellPos=tilemap.WorldToCell(transform.position);
-            var target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            //Debug.Log(target);
-            //Debug.Log(currentCellPos);
-            target.z = 0;
-            MoveTo(target);
+            if (Input.GetMouseButtonDown(1) )
+            {
+                Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                //Debug.Log(target);
+                //Debug.Log(currentCellPos);
+                target.z = 0;
+                MoveTo(target);
 
-            if(shelfManager.isThereAShelf(target)){
-                Debug.Log("there is a shelf at " + target);
-                Debug.Log(shelfManager.GetShelfTile(target));
+                if(MainShelvingManager.isThereAShelf(target)){
+                    Debug.Log("there is a shelf at "  );
+                    //Debug.Log(MainShelvingManager.GetShelfTile(target));
+                }
+                else{
+                    Debug.Log("there is no shelf at " );
+                }
             }
-            else{
-                Debug.Log("there is no shelf at " + target);
-            }
-        }
 
         }
     }
