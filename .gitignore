@@ -1,0 +1,16 @@
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+.gradle/
+*/.vs/
+*/sysinfo.txt
+*.apk
+*.unitypackage
+crashlytics-build.properties
+/[Aa]ssets/TextMeshPro/
+/[Aa]ssets/Plugins/Editor/JetBrains
+!/[Aa]ssets/**/*.meta
