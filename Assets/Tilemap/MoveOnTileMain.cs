@@ -80,11 +80,12 @@ public class MoveOnTileMain : MonoBehaviour
                 MoveTo(target);
 
                 if(MainShelvingManager.isThereAShelf(target)){
-                    Debug.Log("there is a shelf at "  );
+                    Debug.Log("You Targeted:" +target +" there is a shelf at "  );
+
                     //Debug.Log(MainShelvingManager.GetShelfTile(target));
                 }
                 else{
-                    Debug.Log("there is no shelf at " );
+                    Debug.Log("You Targeted:" +target +" there is no shelf at " );
                 }
             }
 

@@ -8,6 +8,32 @@ public class MainShelvingManager : MonoBehaviour
 {
 
 
+    [SerializeField]
+    public struct ShelfKey
+    {
+        public Vector3Int Position;
+
+        public ShelfKey(Vector3Int position)
+        {
+            this.Position = position;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ShelfKey)){
+                return false;
+            }
+
+            ShelfKey other = (ShelfKey)obj;
+            return this.Position.Equals(other.Position);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Position.GetHashCode();
+        }
+    }
+
 
     [SerializeField]
     public class ShelvingData
@@ -21,10 +47,13 @@ public class MainShelvingManager : MonoBehaviour
     }
 
     [SerializeField]
-    public List<ShelvingScript> shelves = new List<ShelvingScript>();
+    public List<ShelvingData> shelves = new List<ShelvingData>();
+
+    [SerializeField]
+    public Dictionary<ShelfKey, ShelvingData> ShelvingScriptsDictionary;
 
     public Tilemap tilemap;
-    private Dictionary<TileBase, ShelvingScript> ShelvingScriptsDictionary;
+    
     public string directoryPath;
     public string filePath;
 
@@ -35,17 +64,10 @@ public class MainShelvingManager : MonoBehaviour
         string filePath = directoryPath + "/shelves.json";
         fileChecker(directoryPath, filePath);
 
-        ShelvingScriptsDictionary = new Dictionary<TileBase, ShelvingScript>();
+        ShelvingScriptsDictionary = new Dictionary<ShelfKey, ShelvingData>();
+        InitializeShelves();
 
-
-        foreach(var ShelvingScriptData in shelves){
-            foreach (var tile in ShelvingScriptData.tiless){
-                Debug.Log(ShelvingScriptData);
-                //tile.setName();
-                ShelvingScriptsDictionary.Add(tile,ShelvingScriptData);
-                
-            }
-        }
+        
 
 
         //LoadAllShelvesData(filePath);
@@ -79,12 +101,22 @@ public class MainShelvingManager : MonoBehaviour
 
     }
 
-
+    void InitializeShelves(){
+        foreach (var position in tilemap.cellBounds.allPositionsWithin){
+            var localPlace = new Vector3Int(position.x, position.y, position.z);
+            if (tilemap.HasTile(localPlace)){
+                //tile.setName();
+                ShelvingScriptsDictionary.Add(new ShelfKey(localPlace),new ShelvingData());
+                }
+        }
+    }
+        
+    
 
 
     public bool isThereAShelf(Vector3Int position){
-        TileBase clickedTile = tilemap.GetTile(position);
-        if (ShelvingScriptsDictionary.ContainsKey(clickedTile))
+        var localPlace = new Vector3Int(position.x, position.y, position.z);
+        if (ShelvingScriptsDictionary.ContainsKey(new ShelfKey(localPlace)))
         {
             return true;
         }

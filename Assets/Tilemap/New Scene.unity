@@ -470,7 +470,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5998aad2e49cfbe418200e404f7e1ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shelves: []
   tilemap: {fileID: 703764457}
   directoryPath: 
   filePath: 
