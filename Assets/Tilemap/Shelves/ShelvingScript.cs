@@ -5,82 +5,63 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu(fileName = "ShelvingScriptTile", menuName = "2D/Tiles/ShelvingScriptTile")]
 
 public class ShelvingScript : ScriptableObject
-{
-    // ShelfGrid is used to determien where a product on the shelf is
-    // x refers to the x on the shelf, while y refers to the shelf its on.
-    [System.Serializable]
-    public struct ShelfGrid {
-        public int x;
-        public int y;
-
-
-        public ShelfGrid(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-        public override string ToString()
-        {
-            return this.x + "," + this.y;
-        }
-    }
-
-    public TileBase[] tiless;
-
-    //determines how max length of the shelf
-    private int maxShelfX = 32;
-    //determines how many shelves are on the actual shelf
-    public int maxShelfY =5;
-    // Add custom properties for a shelf
-    public int inventoryCount;
-    public bool isDirty;
-    public string shelfType;
-
-    public Dictionary<ShelfGrid, string> ShelvingGrid = new Dictionary<ShelfGrid, string>();
-
-    private string name;
-    
-
-    
-    // Serialize the shelf data to JSON
-    public string Serialize()
     {
-        return JsonUtility.ToJson(this);
-    }
+        //determines how max length of the shelf
+        private int maxShelfX = 32;
+        //determines how many shelves are on the actual shelf
+        public int maxShelfY =5;
+        // Add custom properties for a shelf
+        public int inventoryCount;
+        public bool isDirty;
+        public string shelfType;
+        
+        public struct ShelfGrid {
+            public int x;
+            public int y;
+            public int itemID;
+            // itemidpiece is because items can take up multiple coords of a shelf. left to right is how its read.
+            public int itemIDPiece;
 
-    // Deserialize JSON data to update the shelf
-    public void Deserialize(string jsonData)
-    {
-        JsonUtility.FromJsonOverwrite(jsonData, this);
-    }
-    // You can also add methods specific to the shelf
-    public void Restock(int amount)
-    {
-        inventoryCount += amount;
-    }
+            // This shows how many of the item is in stock
+            public int numberInStock;
 
-    public void Clean()
-    {
-        isDirty = false;
-    }
-
-    //main objective of this is to make sure when booting up that ShelfGrid is populated with non null values.
-
-    public void fillWithAir(){
-        for (int i = 0; i < maxShelfY; i++)
-        {
-            for (int j = 0; j < maxShelfX; j++)
+            public ShelfGrid(int x, int y) {
+                this.x = x;
+                this.y = y;
+                this.itemID = 0;
+                this.itemIDPiece = 0;
+                this.numberInStock=0;
+            }
+            public ShelfGrid(int x, int y, int itemID, int itemIDPiece,int numberInStock) {
+                this.x = x;
+                this.y = y;
+                this.itemID = itemID;
+                this.itemIDPiece = itemIDPiece;
+                this.numberInStock=numberInStock;
+            }
+            public void setItemID(int itemID, int itemIDPiece){
+                this.itemID = itemID;
+                this.itemIDPiece = itemIDPiece;
+            }
+            public override string ToString()
             {
-                ShelfGrid shelfGrid = new ShelfGrid(j, i);
-                ShelvingGrid.Add(shelfGrid, "air");
+                return this.x + "," + this.y;
             }
         }
-    }
 
-    public void setName(string name){
-        this.name = name;
-    }
-    public override string ToString()
-    {
-        return "this.name";
-    }
+        public void fillWithAir(){
+            for (int i = 0; i < maxShelfY; i++)
+            {
+                for (int j = 0; j < maxShelfX; j++)
+                {
+                    ShelfGrid ShelvingGrid = new ShelfGrid(j, i);
+                    
+                }
+            }
+        }
+        
+        public override string ToString()
+            {
+                return "This shelf has " + inventoryCount + " items in stock.";
+            }
 }
