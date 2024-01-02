@@ -14,3 +14,4 @@ crashlytics-build.properties
 /[Aa]ssets/TextMeshPro/
 /[Aa]ssets/Plugins/Editor/JetBrains
 !/[Aa]ssets/**/*.meta
+TheStoreSimulation/
