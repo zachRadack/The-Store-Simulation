@@ -10,6 +10,7 @@ public class MoveOnTileMain : MonoBehaviour
 {
     Vector3Int[] directions=new Vector3Int[4] {Vector3Int.left,Vector3Int.right,Vector3Int.up,Vector3Int.down };
 
+    public bool verbose = false;
     public Tilemap tilemap;
     public TileAndMovementCost[] tiles;
     Pathfinder<Vector3Int> pathfinder;
@@ -73,18 +74,20 @@ public class MoveOnTileMain : MonoBehaviour
         if(entityFollowsRightClick){
             if (Input.GetMouseButtonDown(1) ){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                //Debug.Log(target);
-                //Debug.Log(currentCellPos);
                 target.z = 0;
                 MoveTo(target);
 
                 if(MainShelvingManager.isThereAShelf(target)){
-                    Debug.Log("You Targeted:" +target +" there is a shelf at "  );
+                    if(verbose){
+                        Debug.Log("You Targeted:" +target +" there is a shelf at "  );
+                    }
                     MainShelvingManager.testAddItemToShelf(target);
                     
                 }
                 else{
-                    Debug.Log("You Targeted:" +target +" there is no shelf at " );
+                    if(verbose){
+                        Debug.Log("You Targeted:" +target +" there is no shelf at " );
+                    }
                 }
             }else if (Input.GetMouseButtonDown(0) ){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -107,7 +110,9 @@ public class MoveOnTileMain : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(Move());
         }else{
-            Debug.Log("no path found");
+            if(verbose){
+                Debug.Log("no path found");
+            }
             Vector3Int location = Vector3Int.RoundToInt(target);
             Dictionary<Vector3Int, float> nodes = GetNeighbourNodes(location);
             float closestNode = 1000000000000000;
@@ -119,14 +124,17 @@ public class MoveOnTileMain : MonoBehaviour
                 //Debug.Log("value:" +node.Value);
                 if(node.Value<closestNode){
                     bool didItFindPath2 = pathfinder.GenerateAstarPath(tilemap.WorldToCell(transform.position), nodeLocation, out path);
-                    Debug.Log(didItFindPath2);
                     if(didItFindPath2){
+                        if(verbose){
                         Debug.Log("found path to node");
+                        }
                         StopAllCoroutines();
                         StartCoroutine(Move());
                         return;
                     }else{
+                        if(verbose){
                         Debug.Log("no path found");
+                        }
                     }
                 }
             }

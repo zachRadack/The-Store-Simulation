@@ -7,7 +7,7 @@ using System.IO;
 public class MainShelvingManager : MonoBehaviour
 {
 
-
+    public bool verbose = true;
     [SerializeField]
     public struct ShelfKey
     {
@@ -269,8 +269,10 @@ public class MainShelvingManager : MonoBehaviour
         {
             ShelvingData shelf = ShelvingScriptsDictionary[new ShelfKey(position)];
             shelf.setItem(1,1,3,2,3);
+            if(verbose){
             
-            Debug.Log(shelf.getAllGridItems());
+                Debug.Log(shelf.getAllGridItems());
+            }
         }
     }
 
