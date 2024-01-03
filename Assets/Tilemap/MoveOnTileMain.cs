@@ -81,7 +81,7 @@ public class MoveOnTileMain : MonoBehaviour
                 if(MainShelvingManager.isThereAShelf(target)){
                     Debug.Log("You Targeted:" +target +" there is a shelf at "  );
                     MainShelvingManager.testAddItemToShelf(target);
-                    //
+                    
                 }
                 else{
                     Debug.Log("You Targeted:" +target +" there is no shelf at " );
@@ -100,11 +100,37 @@ public class MoveOnTileMain : MonoBehaviour
     /**
         * This starts a coroutine that moves the entity to the target tile.
     **/
-    public void MoveTo(Vector3Int target)
-    {
-        pathfinder.GenerateAstarPath(tilemap.WorldToCell(transform.position), target, out path);
-        StopAllCoroutines();
-        StartCoroutine(Move());
+    public void MoveTo(Vector3Int target){
+
+        bool didItFindPath = pathfinder.GenerateAstarPath(tilemap.WorldToCell(transform.position), target, out path);
+        if(didItFindPath){
+            StopAllCoroutines();
+            StartCoroutine(Move());
+        }else{
+            Debug.Log("no path found");
+            Vector3Int location = Vector3Int.RoundToInt(target);
+            Dictionary<Vector3Int, float> nodes = GetNeighbourNodes(location);
+            float closestNode = 1000000000000000;
+            foreach (KeyValuePair<Vector3Int, float> node in nodes)
+            {
+                Debug.Log(node.Key);
+                Vector3Int nodeLocation = Vector3Int.RoundToInt(node.Key);
+                // find the closest node to the target and see if path
+                //Debug.Log("value:" +node.Value);
+                if(node.Value<closestNode){
+                    bool didItFindPath2 = pathfinder.GenerateAstarPath(tilemap.WorldToCell(transform.position), nodeLocation, out path);
+                    Debug.Log(didItFindPath2);
+                    if(didItFindPath2){
+                        Debug.Log("found path to node");
+                        StopAllCoroutines();
+                        StartCoroutine(Move());
+                        return;
+                    }else{
+                        Debug.Log("no path found");
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -129,6 +155,21 @@ public class MoveOnTileMain : MonoBehaviour
     }
 
 
+    Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos){
+        Dictionary<Vector3Int, float> neighbours = new Dictionary<Vector3Int, float>();
+        for (int i = -1; i < 2; i++){
+            for (int j = -1; j < 2; j++){
+                
+                Vector3Int dir = new Vector3Int(i, j,0);
+                if (!Physics.Linecast(pos, pos + dir)){
+                    neighbours.Add(pos + dir, dir.magnitude);
+                }
+            }
+
+        }
+        return neighbours;
+
+    }
 
     
 }

@@ -221,10 +221,6 @@ public class MainShelvingManager : MonoBehaviour
 
         ShelvingScriptsDictionary = new Dictionary<ShelfKey, ShelvingData>();
         InitializeShelves();
-
-        
-
-
         //LoadAllShelvesData(filePath);
         //Debug.Log("ShelvingScriptsDictionary: " + ShelvingScriptsDictionary);
         //SaveAllShelvesData(filePath);
