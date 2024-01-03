@@ -9,7 +9,7 @@ using Aoiti.Pathfinding;
 public class MoveOnTileMain : MonoBehaviour
 {
     Vector3Int[] directions=new Vector3Int[4] {Vector3Int.left,Vector3Int.right,Vector3Int.up,Vector3Int.down };
-
+    public TriggerUI uiTrigger;
     public bool verbose = false;
     public Tilemap tilemap;
     public TileAndMovementCost[] tiles;
@@ -72,7 +72,8 @@ public class MoveOnTileMain : MonoBehaviour
     void Update()
     {
         if(entityFollowsRightClick){
-            if (Input.GetMouseButtonDown(1) ){
+            //if (Input.GetMouseButtonDown(1) ){
+            if (false){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 target.z = 0;
                 MoveTo(target);
@@ -89,12 +90,15 @@ public class MoveOnTileMain : MonoBehaviour
                         Debug.Log("You Targeted:" +target +" there is no shelf at " );
                     }
                 }
-            }else if (Input.GetMouseButtonDown(0) ){
+            //}else if (Input.GetMouseButtonDown(0) ){
+            }else if (false){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 //Debug.Log(target);
                 //Debug.Log(currentCellPos);
                 target.z = 0;
                 Debug.Log(MainShelvingManager.GetShelfTile(target));
+            }else if(Input.GetMouseButtonDown(1)){
+                uiTrigger.TriggerShelfUICall();
             }
 
         }
