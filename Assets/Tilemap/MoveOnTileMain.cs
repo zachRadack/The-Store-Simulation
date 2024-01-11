@@ -72,8 +72,7 @@ public class MoveOnTileMain : MonoBehaviour
     void Update()
     {
         if(entityFollowsRightClick){
-            //if (Input.GetMouseButtonDown(1) ){
-            if (false){
+            if (Input.GetMouseButtonDown(1) ){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 target.z = 0;
                 MoveTo(target);
@@ -90,15 +89,14 @@ public class MoveOnTileMain : MonoBehaviour
                         Debug.Log("You Targeted:" +target +" there is no shelf at " );
                     }
                 }
-            //}else if (Input.GetMouseButtonDown(0) ){
-            }else if (false){
+            }else if (Input.GetMouseButtonDown(0) ){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 //Debug.Log(target);
                 //Debug.Log(currentCellPos);
                 target.z = 0;
                 Debug.Log(MainShelvingManager.GetShelfTile(target));
-            }else if(Input.GetMouseButtonDown(1)){
-                uiTrigger.TriggerShelfUICall();
+            }else if(Input.GetKeyDown(KeyCode.I)){
+                uiTrigger.OnPointerClick(5,100f);
             }
 
         }

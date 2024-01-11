@@ -5,9 +5,17 @@ using UnityEngine;
 
 public class TriggerUI : MonoBehaviour
 {
-    public GameObject prefabUI;
+
     // TODO: Make this be able to load elements relevant to the shelf
-    public void TriggerShelfUICall(){
-        Instantiate(prefabUI, transform.position, Quaternion.identity, transform.parent);
+    public GameObject uiElement; 
+
+    public ShelfUIManager ShelfUIManagerScript;
+    public MainShelvingManager MainShelvingManager;
+
+
+    // this method will take the number of shelves and call in a function in uiElement with the number of shelves.
+    public void OnPointerClick(int numShelves, float shelfHeightPercent)
+    {
+        ShelfUIManagerScript.CreateShelves(numShelves,shelfHeightPercent);
     }
 }
