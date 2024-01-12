@@ -346,71 +346,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &554166512
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 554166514}
-  - component: {fileID: 554166515}
-  - component: {fileID: 554166513}
-  m_Layer: 0
-  m_Name: ShelfManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &554166513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554166512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb92cef20bdce2e4890d5a1e544bcd30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiElement: {fileID: 1303445763}
-  ShelfUIManagerScript: {fileID: 1303445768}
-  MainShelvingManager: {fileID: 554166515}
---- !u!4 &554166514
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554166512}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.82159, y: -13.189407, z: -3890.309}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &554166515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 554166512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5998aad2e49cfbe418200e404f7e1ec0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  verbose: 1
-  tilemap: {fileID: 703764457}
-  directoryPath: 
-  filePath: 
 --- !u!1 &703764454
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,7 +840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c7aeec8dd6c43a469391ac6920e08cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiTrigger: {fileID: 554166513}
+  uiTrigger: {fileID: 1303445769}
   verbose: 0
   tilemap: {fileID: 1241312675}
   tiles:
@@ -914,7 +851,7 @@ MonoBehaviour:
     movable: 0
     movementCost: 20
   entityFollowsRightClick: 1
-  MainShelvingManager: {fileID: 554166515}
+  MainShelvingManager: {fileID: 1011787601}
   path: []
   stepTime: 1
 --- !u!4 &882301526
@@ -929,7 +866,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &882301527
 SpriteRenderer:
@@ -995,6 +932,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveOnTileMainScript: {fileID: 882301525}
+--- !u!1 &1011787600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1011787602}
+  - component: {fileID: 1011787601}
+  m_Layer: 0
+  m_Name: ShelvingManagerEntity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1011787601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011787600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5998aad2e49cfbe418200e404f7e1ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  verbose: 1
+  tilemap: {fileID: 703764457}
+  directoryPath: 
+  filePath: 
+--- !u!4 &1011787602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011787600}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 269.00394, y: 285.46146, z: -22714.316}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1241312674
 GameObject:
   m_ObjectHideFlags: 0
@@ -8364,6 +8348,7 @@ GameObject:
   - component: {fileID: 1303445765}
   - component: {fileID: 1303445764}
   - component: {fileID: 1303445768}
+  - component: {fileID: 1303445769}
   m_Layer: 5
   m_Name: ShelfCanvas
   m_TagString: Untagged
@@ -8465,6 +8450,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shelfPrefab: {fileID: 803871796651040220, guid: 3b94c79d6765dcf4884785ad2967b7d6, type: 3}
+  canvas: {fileID: 1303445766}
+  defaultShelfCount: 5
+--- !u!114 &1303445769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303445763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb92cef20bdce2e4890d5a1e544bcd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiElement: {fileID: 1303445763}
+  ShelfUIManagerScript: {fileID: 1303445768}
+  MainShelvingManager: {fileID: 1011787601}
 --- !u!1 &1556705844
 GameObject:
   m_ObjectHideFlags: 0
@@ -8529,7 +8531,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1876618135
 GameObject:
@@ -8575,7 +8577,7 @@ Transform:
   - {fileID: 224863723}
   - {fileID: 703764455}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1914183908
 GameObject:

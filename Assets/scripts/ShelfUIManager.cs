@@ -7,10 +7,13 @@ using UnityEngine.UI;
 public class ShelfUIManager : MonoBehaviour
 {
     public GameObject shelfPrefab; 
-
-    // 10% buffer on all sides
-    private float screenBuffer = 0.1f; 
-
+    public Canvas canvas;
+    public int defaultShelfCount = 5;
+     // Maximum number of shelves
+    private int maxShelfCount;
+    // Height of each shelf as a percentage of screen height
+    private float shelfHeightPercentage; 
+    
     public void OnButtonClick()
     {
         Debug.Log("Destroying UI element");
@@ -18,27 +21,29 @@ public class ShelfUIManager : MonoBehaviour
     }
 
     // CreateShelves now takes two parameters: numberOfShelves and shelfHeightPercent
-    public void CreateShelves(int numberOfShelves, float shelfHeightPercent)
+    public void CreateShelves(int numberOfShelves, float heightPercentage)
     {
-        // Calculate the total usable height considering the buffer
-        float usableHeight = Screen.height * (1 - 2 * screenBuffer);
+        maxShelfCount = Mathf.Clamp(numberOfShelves, 1, defaultShelfCount);
+        shelfHeightPercentage = Mathf.Clamp(heightPercentage, 0, 100);
 
-        // Calculate individual shelf height based on the percentage
-        float shelfHeight = usableHeight * (shelfHeightPercent / 100f);
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
+        float buffer = 0.1f; // 10% buffer
 
-        // Calculate starting Y position for the first shelf
-        float startY = Screen.height * screenBuffer + (usableHeight - shelfHeight * numberOfShelves) / 2;
+        float usableWidth = screenWidth * (1 - 2 * buffer);
+        float usableHeight = screenHeight * (1 - 2 * buffer);
+        float totalShelvesHeight = usableHeight * (shelfHeightPercentage / 100f);
+        float singleShelfHeight = totalShelvesHeight / maxShelfCount;
+        //Debug.Log("singleShelfHeight: " + singleShelfHeight);
+        float startYPosition = -(usableHeight / 2) + (singleShelfHeight / 2);
 
-        for (int i = 0; i < numberOfShelves; i++)
+        for (int i = 0; i < maxShelfCount; i++)
         {
-            GameObject newShelf = Instantiate(shelfPrefab, transform);
+            GameObject shelf = Instantiate(shelfPrefab, canvas.transform);
+            RectTransform rt = shelf.GetComponent<RectTransform>();
 
-            // Setting up the shelf position and scale according to screen size
-            RectTransform rt = newShelf.GetComponent<RectTransform>();
-            rt.anchorMin = new Vector2(screenBuffer, startY / Screen.height + i * shelfHeight / Screen.height);
-            rt.anchorMax = new Vector2(1 - screenBuffer, startY / Screen.height + (i + 1) * shelfHeight / Screen.height);
-            rt.offsetMin = rt.offsetMax = Vector2.zero; // To ensure it stretches to fill the anchors
+            rt.sizeDelta = new Vector2(usableWidth - screenWidth, -(screenHeight-singleShelfHeight));
+            rt.anchoredPosition = new Vector2(0, startYPosition + (i * singleShelfHeight));
         }
     }
 }
-
