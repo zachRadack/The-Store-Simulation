@@ -19,6 +19,7 @@ public class MoveOnTileMain : MonoBehaviour
     public MainShelvingManager MainShelvingManager;
 
     public int debugShelfCount = 5;
+    
 
     [System.Serializable]
     public struct TileAndMovementCost
@@ -98,7 +99,12 @@ public class MoveOnTileMain : MonoBehaviour
                 target.z = 0;
                 Debug.Log(MainShelvingManager.GetShelfTile(target));
             }else if(Input.GetKeyDown(KeyCode.I)){
-                uiTrigger.OnPointerClick(debugShelfCount,100f);
+
+                List<ShelfData> shelfDimensions = new List<ShelfData>();
+                shelfDimensions.Add(new ShelfData(new Vector2(20,10),new Vector2(150,0)));
+                shelfDimensions.Add(new ShelfData(new Vector2(20,10),new Vector2(100,100)));
+                //uiTrigger.OnPointerClick(debugShelfCount,100f);
+                uiTrigger.OnPointerClickCustom(shelfDimensions);
             }
 
         }

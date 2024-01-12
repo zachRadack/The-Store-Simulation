@@ -46,4 +46,19 @@ public class ShelfUIManager : MonoBehaviour
             rt.anchoredPosition = new Vector2(0, startYPosition + (i * singleShelfHeight));
         }
     }
+
+    public void CreateCustomShelves(List<ShelfData> shelfDataList)
+    {
+        foreach (ShelfData shelfData in shelfDataList)
+        {
+            GameObject shelf = Instantiate(shelfPrefab, canvas.transform);
+            RectTransform rt = shelf.GetComponent<RectTransform>();
+
+            // Set the size and position of the shelf based on ShelfData
+            rt.sizeDelta = new Vector2(shelfData.dimensions.x, shelfData.dimensions.y);
+            rt.anchoredPosition = new Vector2(shelfData.position.x, shelfData.position.y);
+        }
+    }
 }
+
+
