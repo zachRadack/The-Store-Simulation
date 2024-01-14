@@ -10,7 +10,7 @@ public class MoveOnTileMain : MonoBehaviour
 {
     Vector3Int[] directions=new Vector3Int[4] {Vector3Int.left,Vector3Int.right,Vector3Int.up,Vector3Int.down };
     public TriggerUI uiTrigger;
-    public bool verbose = false;
+    public bool verbose = true;
     public Tilemap tilemap;
     public TileAndMovementCost[] tiles;
     Pathfinder<Vector3Int> pathfinder;
