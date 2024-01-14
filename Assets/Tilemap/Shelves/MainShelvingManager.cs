@@ -148,7 +148,7 @@ public class MainShelvingManager : MonoBehaviour
         }
        
         //TODO: Add in scene editing to add in the shelves
-        PrintShelvingScriptsDictionary();
+        //PrintShelvingScriptsDictionary();
     }
 
 
