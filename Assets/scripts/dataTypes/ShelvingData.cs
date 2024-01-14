@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This is the scriptable object that will be used to store the data for each shelf in the game
 [System.Serializable]
 public class ShelvingData
 {
