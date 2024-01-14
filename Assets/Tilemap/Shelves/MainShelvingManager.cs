@@ -91,10 +91,10 @@ public class MainShelvingManager : MonoBehaviour
 
     public bool isThereAShelf(Vector3Int position){
         var localPlace = new Vector3Int(position.x, position.y, position.z);
-        Debug.Log("localPlace: " + localPlace);
+        //Debug.Log("localPlace: " + localPlace);
         if (ShelvingScriptsDictionary.ContainsKey(new ShelfKey(localPlace)))
         {
-            Debug.Log("There is a shelf at " + position);
+            //Debug.Log("There is a shelf at " + position);
             return true;
         }
         return false;
@@ -148,7 +148,7 @@ public class MainShelvingManager : MonoBehaviour
         {
             ShelvingScriptsDictionary.Add(entry.key, entry.value);
             ShelvingScriptsDictionary[new ShelfKey(entry.key.GetPosition())].fillWithAir();
-            Debug.Log("entry.key.GetPosition(): " + entry.key.GetPosition());
+            //Debug.Log("entry.key.GetPosition(): " + entry.key.GetPosition());
             PrintShelf(entry.value,entry.key.GetPosition());
         }
        

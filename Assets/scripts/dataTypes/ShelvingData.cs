@@ -33,8 +33,13 @@ public class ShelvingData
     // TODO: Add a detector so rouge goback items will always be put in a valid spot
     // TODO: Add a overwrite so if so I set an item that crosess over another item it will overwrite it
     public bool setItem(int x, int y, int itemID, int itemIDPiece, int numberInStock){
-        if(x + itemIDPiece > maxShelfX || y > maxShelfY){
+        Debug.Log("setItem called");
+        if((x + itemIDPiece > maxShelfX )|| (y+1 > maxShelfY)){
             Debug.Log("The item is too big for the shelf");
+            return false;
+        }
+        if(x < 0 || y < 0){
+            Debug.Log("The item is too small for the shelf");
             return false;
         }
 
