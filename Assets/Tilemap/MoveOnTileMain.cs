@@ -105,6 +105,8 @@ public class MoveOnTileMain : MonoBehaviour
                 shelfDimensions.Add(new ShelfData(new Vector2(20,10),new Vector2(100,100)));
                 //uiTrigger.OnPointerClick(debugShelfCount,100f);
                 uiTrigger.OnPointerClickCustom(shelfDimensions);
+            }else if(Input.GetKeyDown(KeyCode.O)){
+                MainShelvingManager.SaveAllShelvesData();
             }
 
         }
@@ -128,7 +130,7 @@ public class MoveOnTileMain : MonoBehaviour
             float closestNode = 1000000000000000;
             foreach (KeyValuePair<Vector3Int, float> node in nodes)
             {
-                Debug.Log(node.Key);
+                //Debug.Log(node.Key);
                 Vector3Int nodeLocation = Vector3Int.RoundToInt(node.Key);
                 // find the closest node to the target and see if path
                 //Debug.Log("value:" +node.Value);

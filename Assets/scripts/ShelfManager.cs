@@ -42,8 +42,9 @@ public class ShelfManager : MonoBehaviour
         fileChecker(directoryPath, filePath);
         InitializeShelves();
         //LoadAllShelvesData(filePath);
-        //Debug.Log("shelfTiles: " + shelfTiles);
-        SaveAllShelvesData(filePath);
+        Debug.Log("shelfTiles: " + shelfTiles);
+
+        SaveAllShelvesData();
     }
 
     void fileChecker(string directoryPath, string filePath)
@@ -124,13 +125,14 @@ public class ShelfManager : MonoBehaviour
     }
 
     // Save data for all shelves
-    public void SaveAllShelvesData(string filePath)
+    public void SaveAllShelvesData()
     {
         AllShelvesData allShelvesDataDic = new AllShelvesData();
-        //Debug.Log("shelfTiles: " + shelfTiles);
+        string directoryPath = Application.persistentDataPath + "/saveData";
+        string filePath = directoryPath + "/shelves.json";
+        Debug.Log("shelfTiles:" + shelfTiles);
         foreach (var kvp in shelfTiles)
         {
-            //Debug.Log("kvp: " + kvp);
             ShelfData shelfData = new ShelfData
             {
                 position = kvp.Key,
@@ -144,7 +146,7 @@ public class ShelfManager : MonoBehaviour
         }
         //Debug.Log("allShelvesDataDic: " + allShelvesDataDic);
 
-        //Debug.Log("filePath: " + filePath);
+        Debug.Log("filePath: " + filePath);
         string jsonData = JsonUtility.ToJson(allShelvesDataDic, true);
         System.IO.File.WriteAllText(filePath, jsonData);
     }
