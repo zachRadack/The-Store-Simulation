@@ -106,4 +106,23 @@ public class ShelvingData
         {
             return "This shelf has " + inventoryCount + " items in stock.";
         }
+    
+    public int getMaxShelfX(){
+        return maxShelfX;
+    }
+    public int getMaxShelfY(){
+        return maxShelfY;
+    }
+
+    public ShelfGrid getGrid(int x, int y){
+        ShelfGridKey key = new ShelfGridKey(new Vector3Int(x,y,0));
+        if (ShelfGridDictionary.ContainsKey(key))
+        {
+            return ShelfGridDictionary[key];
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

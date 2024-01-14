@@ -852,6 +852,7 @@ MonoBehaviour:
     movementCost: 20
   entityFollowsRightClick: 1
   MainShelvingManager: {fileID: 1011787601}
+  debugShelfCount: 5
   path: []
   stepTime: 1
 --- !u!4 &882301526
@@ -962,7 +963,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   verbose: 1
+  shelves: []
   tilemap: {fileID: 703764457}
+  tilemapFloor: {fileID: 1241312675}
+  shelfTile: {fileID: 11400000, guid: 14435b4119c8c1b46b55aae527ce1d02, type: 2}
+  floorTile: {fileID: 11400000, guid: 9a59af60c3954d94d8203bfa99d94284, type: 2}
   directoryPath: 
   filePath: 
 --- !u!4 &1011787602
