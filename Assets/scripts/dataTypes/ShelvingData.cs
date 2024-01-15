@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This is the scriptable object that will be used to store the data for each shelf in the game
 [System.Serializable]
 public class ShelvingData
 {
@@ -33,8 +34,13 @@ public class ShelvingData
     // TODO: Add a detector so rouge goback items will always be put in a valid spot
     // TODO: Add a overwrite so if so I set an item that crosess over another item it will overwrite it
     public bool setItem(int x, int y, int itemID, int itemIDPiece, int numberInStock){
-        if(x + itemIDPiece > maxShelfX || y > maxShelfY){
+        Debug.Log("setItem called");
+        if((x + itemIDPiece > maxShelfX )|| (y+1 > maxShelfY)){
             Debug.Log("The item is too big for the shelf");
+            return false;
+        }
+        if(x < 0 || y < 0){
+            Debug.Log("The item is too small for the shelf");
             return false;
         }
 
@@ -106,4 +112,23 @@ public class ShelvingData
         {
             return "This shelf has " + inventoryCount + " items in stock.";
         }
+    
+    public int getMaxShelfX(){
+        return maxShelfX;
+    }
+    public int getMaxShelfY(){
+        return maxShelfY;
+    }
+
+    public ShelfGrid getGrid(int x, int y){
+        ShelfGridKey key = new ShelfGridKey(new Vector3Int(x,y,0));
+        if (ShelfGridDictionary.ContainsKey(key))
+        {
+            return ShelfGridDictionary[key];
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

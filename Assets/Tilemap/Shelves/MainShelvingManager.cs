@@ -14,6 +14,9 @@ public class MainShelvingManager : MonoBehaviour
     public Dictionary<ShelfKey, ShelvingData> ShelvingScriptsDictionary;
 
     public Tilemap tilemap;
+    public Tilemap tilemapFloor;
+    public TileBase shelfTile;
+    public TileBase floorTile;
     
     public string directoryPath;
     public string filePath;
@@ -88,10 +91,10 @@ public class MainShelvingManager : MonoBehaviour
 
     public bool isThereAShelf(Vector3Int position){
         var localPlace = new Vector3Int(position.x, position.y, position.z);
-        Debug.Log("localPlace: " + localPlace);
+        //Debug.Log("localPlace: " + localPlace);
         if (ShelvingScriptsDictionary.ContainsKey(new ShelfKey(localPlace)))
         {
-            Debug.Log("There is a shelf at " + position);
+            //Debug.Log("There is a shelf at " + position);
             return true;
         }
         return false;
@@ -145,10 +148,11 @@ public class MainShelvingManager : MonoBehaviour
         {
             ShelvingScriptsDictionary.Add(entry.key, entry.value);
             ShelvingScriptsDictionary[new ShelfKey(entry.key.GetPosition())].fillWithAir();
+            //Debug.Log("entry.key.GetPosition(): " + entry.key.GetPosition());
+            PrintShelf(entry.value,entry.key.GetPosition());
         }
        
         //TODO: Add in scene editing to add in the shelves
-        //PrintShelvingScriptsDictionary();
     }
 
 
@@ -166,6 +170,11 @@ public class MainShelvingManager : MonoBehaviour
         }
     }
 
+    //This will print to tilemap a given self at the x y position a shelf tile
+    public void PrintShelf(ShelvingData shelf, Vector3Int position){
+        tilemap.SetTile(position,shelfTile);
+        tilemapFloor.SetTile(position,floorTile);
+    }
 
 
 
