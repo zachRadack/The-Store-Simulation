@@ -15,32 +15,25 @@ public class DatabaseManager : MonoBehaviour
         connectionString = dbPath;
         Debug.Log("dbPath: " + dbPath);
         // Create table
-        //CreateTable();
+        CreateTable();
         //AddDataToTable(1, "Hello");
     }
     private void CreateTable()
     {
-        // Open a connection to the database
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
         {
             dbConnection.Open();
-
-            // Create a command to execute
+            Debug.Log("Creating table: " + dbConnection);
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
-                // SQL query to create a new table
-                string sqlQuery = "CREATE TABLE IF NOT EXISTS example_table (id INTEGER PRIMARY KEY, value TEXT)";
+                string sqlQuery = "CREATE TABLE IF NOT EXISTS ProductCategories (ProductID INTEGER, CategoryID INTEGER);"+
+                    "CREATE TABLE IF NOT EXISTS Products (ProductID INTEGER PRIMARY KEY AUTOINCREMENT, ProductName TEXT);"+
+                    "CREATE TABLE IF NOT EXISTS Categories (CategoryID INTEGER PRIMARY KEY AUTOINCREMENT, CategoryName TEXT);"; 
                 dbCmd.CommandText = sqlQuery;
-                
-                // Execute the command
                 dbCmd.ExecuteScalar();
-
-                
             }
             dbConnection.Close();
         }
-
-        Debug.Log("Database and table created at: " + connectionString);
     }
     public void ReadTable()
     {
