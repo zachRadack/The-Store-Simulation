@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// handles ui coordinates
 public class CoordinateTranslator : MonoBehaviour
 {
     public RectTransform referenceRectTransform; // The RectTransform you are working with, typically the canvas
