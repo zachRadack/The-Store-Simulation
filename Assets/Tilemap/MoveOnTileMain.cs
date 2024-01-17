@@ -19,7 +19,10 @@ public class MoveOnTileMain : MonoBehaviour
     public MainShelvingManager MainShelvingManager;
 
     public int debugShelfCount = 5;
-    
+
+    //todo: delete later, for testing
+    private DatabaseManager databaseManager;
+
 
     [System.Serializable]
     public struct TileAndMovementCost
@@ -69,6 +72,10 @@ public class MoveOnTileMain : MonoBehaviour
     void Start()
     {
         pathfinder = new Pathfinder<Vector3Int>(DistanceFunc, connectionsAndCosts);
+
+        databaseManager = FindObjectOfType<DatabaseManager>();
+        
+
     }
 
     // Update is called once per frame
@@ -106,7 +113,14 @@ public class MoveOnTileMain : MonoBehaviour
                 //uiTrigger.OnPointerClick(debugShelfCount,100f);
                 uiTrigger.OnPointerClickCustom(shelfDimensions);
             }else if(Input.GetKeyDown(KeyCode.O)){
-                MainShelvingManager.SaveAllShelvesData();
+                if (databaseManager != null) {
+                    Debug.Log("DatabaseManager found in the scene!");
+                    databaseManager.TestDatabaseFunctions();
+                    MainShelvingManager.SaveAllShelvesData();
+                    Debug.Log("DatabaseManager finished testing database functions.");
+                } else {
+                    Debug.LogError("DatabaseManager not found in the scene!");
+                }
             }
 
         }

@@ -1,10 +1,19 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class ShelfData
 {
     public Vector2 dimensions;
     public Vector2 position;
+    public Vector3Int position3d;
+    public int inventoryCount;
+    public bool isDirty;
+    public string shelfType;
+    public Dictionary<shelfTile.ShelfGrid, string> ShelvingGrid;
+    public int maxShelfY;
     
     public ShelfData(Vector2 _dimensions, Vector2 _position)
     {
