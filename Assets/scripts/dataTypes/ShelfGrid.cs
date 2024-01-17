@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// will eventually become the 3d matrixes that hold the data for each shelf
 public class ShelfGrid
 {
     // TODO: Add a detector so rouge goback items will always be put in a valid spot

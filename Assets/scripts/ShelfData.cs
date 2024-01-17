@@ -3,6 +3,7 @@ using UnityEngine.Tilemaps;
 using System.Collections;
 using System.Collections.Generic;
 
+// This handles data for each shelf and its structure. 
 [System.Serializable]
 public class ShelfData
 {
