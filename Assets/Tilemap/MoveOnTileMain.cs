@@ -116,6 +116,7 @@ public class MoveOnTileMain : MonoBehaviour
                 if (databaseManager != null) {
                     Debug.Log("DatabaseManager found in the scene!");
                     databaseManager.TestDatabaseFunctions();
+                    MainShelvingManager.SaveAllShelvesData();
                     Debug.Log("DatabaseManager finished testing database functions.");
                 } else {
                     Debug.LogError("DatabaseManager not found in the scene!");

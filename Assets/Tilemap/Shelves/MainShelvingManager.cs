@@ -20,6 +20,7 @@ public class MainShelvingManager : MonoBehaviour
     
     public string directoryPath;
     public string filePath;
+    public DatabaseManager databaseManager;
 
     void Awake()
     {
@@ -60,6 +61,8 @@ public class MainShelvingManager : MonoBehaviour
             // The file exists
             Debug.Log("File already exists at: " + filePath);
             LoadAllShelvesData(filePath);
+            
+            //databaseManager.LoadAllShelvesData(ShelvingScriptsDictionary);
 
         }
 
@@ -112,14 +115,7 @@ public class MainShelvingManager : MonoBehaviour
 
     public void SaveAllShelvesData()
     {
-        List<ShelvingDataEntry> entries = new List<ShelvingDataEntry>();
-        foreach (KeyValuePair<ShelfKey, ShelvingData> pair in ShelvingScriptsDictionary)
-        {
-            entries.Add(new ShelvingDataEntry(pair.Key, pair.Value));
-        }
-
-        string json = JsonUtility.ToJson(new Serialization<ShelvingDataEntry>(entries), true);
-        File.WriteAllText(filePath, json);
+        databaseManager.SaveAllShelvesData(ShelvingScriptsDictionary);
     }
     
     [System.Serializable]
