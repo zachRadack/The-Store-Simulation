@@ -6,10 +6,17 @@ using UnityEngine.UI;
 
 public class ShelfUIManager : MonoBehaviour
 {
+    public Canvas canvas;
     public GameObject shelfPrefabDebug; 
     public GameObject shelfPrefabBackground;
     public GameObject shelfPrefabShelf;
-    public Canvas canvas;
+
+    // this represents the sizeDelta y of the shelf, which is the height of the shelf.
+    public float thicknessOfShelves = -452f;
+
+
+
+    // TODO: All of these variables are used in createshelves function, will probably be deleted later
     public int defaultShelfCount = 5;
      // Maximum number of shelves
     private int maxShelfCount;
@@ -61,6 +68,27 @@ public class ShelfUIManager : MonoBehaviour
             rt.anchoredPosition = new Vector2(shelfData.position.x, shelfData.position.y);
         }
     }
+
+    public void CreateShelfBackground(List<float> BackgroundshelfDimensions){
+        GameObject shelf = Instantiate(shelfPrefabBackground, canvas.transform);
+        RectTransform rt = shelf.GetComponent<RectTransform>();
+
+        // Set the size and position of the shelf based on ShelfData
+        rt.sizeDelta = new Vector2(BackgroundshelfDimensions[2], BackgroundshelfDimensions[3]);
+        rt.anchoredPosition = new Vector2(BackgroundshelfDimensions[0], BackgroundshelfDimensions[1]);
+    }
+    public void CreateCustomShelves(List<float> shelfDimensions)
+    {
+        // shelfDimensions is a list of floats that contains the dimensions of the shelves. the first is x anchor, second is y anchor, third is x size delta, fourth is y size delta.
+        // TODO: ShelfDimensions may have other variables later to create an air pocket above the shelf, to allow easier placing of product representations.
+        GameObject shelf = Instantiate(shelfPrefabShelf, canvas.transform);
+        RectTransform rt = shelf.GetComponent<RectTransform>();
+
+        // Set the size and position of the shelf based on ShelfData
+        rt.sizeDelta = new Vector2(shelfDimensions[2], thicknessOfShelves);
+        rt.anchoredPosition = new Vector2(shelfDimensions[0], shelfDimensions[1]);
+    }
+
 }
 
 
