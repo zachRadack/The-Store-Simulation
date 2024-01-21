@@ -92,7 +92,7 @@ public class MoveOnTileMain : MonoBehaviour
                     if(verbose){
                         Debug.Log("You Targeted:" +target +" there is a shelf at "  );
                     }
-                    MainShelvingManager.testAddItemToShelf(target);
+                    //MainShelvingManager.testAddItemToShelf(target);
                     
                 }
                 else{
