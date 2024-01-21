@@ -6,7 +6,9 @@ using UnityEngine.UI;
 
 public class ShelfUIManager : MonoBehaviour
 {
-    public GameObject shelfPrefab; 
+    public GameObject shelfPrefabDebug; 
+    public GameObject shelfPrefabBackground;
+    public GameObject shelfPrefabShelf;
     public Canvas canvas;
     public int defaultShelfCount = 5;
      // Maximum number of shelves
@@ -39,7 +41,7 @@ public class ShelfUIManager : MonoBehaviour
 
         for (int i = 0; i < maxShelfCount; i++)
         {
-            GameObject shelf = Instantiate(shelfPrefab, canvas.transform);
+            GameObject shelf = Instantiate(shelfPrefabDebug, canvas.transform);
             RectTransform rt = shelf.GetComponent<RectTransform>();
 
             rt.sizeDelta = new Vector2(usableWidth - screenWidth, -(screenHeight-singleShelfHeight));
@@ -51,7 +53,7 @@ public class ShelfUIManager : MonoBehaviour
     {
         foreach (ShelfData shelfData in shelfDataList)
         {
-            GameObject shelf = Instantiate(shelfPrefab, canvas.transform);
+            GameObject shelf = Instantiate(shelfPrefabDebug, canvas.transform);
             RectTransform rt = shelf.GetComponent<RectTransform>();
 
             // Set the size and position of the shelf based on ShelfData

@@ -8275,9 +8275,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2b5edd00e284c46bad61673d0274c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shelfPrefab: {fileID: 803871796651040220, guid: 3b94c79d6765dcf4884785ad2967b7d6, type: 3}
+  shelfPrefabDebug: {fileID: 2320256436637327773, guid: 9a48f3b4bfed3304b826d3f86f0af724, type: 3}
+  shelfPrefabBackground: {fileID: 0}
+  shelfPrefabShelf: {fileID: 0}
   canvas: {fileID: 1303445766}
-  defaultShelfCount: 5
+  defaultShelfCount: 1
 --- !u!114 &1303445769
 MonoBehaviour:
   m_ObjectHideFlags: 0

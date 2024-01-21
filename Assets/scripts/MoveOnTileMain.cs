@@ -110,8 +110,8 @@ public class MoveOnTileMain : MonoBehaviour
                 List<ShelfData> shelfDimensions = new List<ShelfData>();
                 shelfDimensions.Add(new ShelfData(new Vector2(20,10),new Vector2(150,0)));
                 shelfDimensions.Add(new ShelfData(new Vector2(20,10),new Vector2(100,100)));
-                //uiTrigger.OnPointerClick(debugShelfCount,100f);
-                uiTrigger.OnPointerClickCustom(shelfDimensions);
+                uiTrigger.OnPointerClick(debugShelfCount,100f);
+                //uiTrigger.OnPointerClickCustom(shelfDimensions);
             }else if(Input.GetKeyDown(KeyCode.O)){
                 if (databaseManager != null) {
                     Debug.Log("DatabaseManager found in the scene!");
