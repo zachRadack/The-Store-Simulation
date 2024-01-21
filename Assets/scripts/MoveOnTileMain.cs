@@ -152,6 +152,7 @@ public class MoveOnTileMain : MonoBehaviour
             }
             Vector3Int location = Vector3Int.RoundToInt(target);
             Dictionary<Vector3Int, float> nodes = GetNeighbourNodes(location);
+            // TODO: Figure out better way to do this
             float closestNode = 1000000000000000;
             foreach (KeyValuePair<Vector3Int, float> node in nodes)
             {

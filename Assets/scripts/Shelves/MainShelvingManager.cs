@@ -28,7 +28,7 @@ public class MainShelvingManager : MonoBehaviour
         ShelvingScriptsDictionary = new Dictionary<ShelfKey, ShelvingData>();
         //PrintShelvingScriptsDictionary();
         // TODO:JOSN DEADEND
-        loadDB(directoryPath, filePath);
+        loadDB();
         //SaveAllShelvesData(filePath);
     }
 
