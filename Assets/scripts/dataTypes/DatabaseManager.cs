@@ -18,12 +18,13 @@ public class DatabaseManager : MonoBehaviour
         Debug.Log("dbPath: " + dbPath);
         // Create table
         CreateTable();
-        
+
         //AddDataToTable(1, "Hello");
     }
 
 
-    private void properAwaken(){
+    private void properAwaken()
+    {
         dbPath = "URI=file:" + Application.persistentDataPath + "/Database/MyDatabase.db";
         connectionString = dbPath;
         Debug.Log("dbPath: " + dbPath);
@@ -38,11 +39,11 @@ public class DatabaseManager : MonoBehaviour
             Debug.Log("Creating table: " + dbConnection);
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
-                string sqlQuery = "CREATE TABLE IF NOT EXISTS ProductCategories (ProductID INTEGER, CategoryID INTEGER);"+
+                string sqlQuery = "CREATE TABLE IF NOT EXISTS ProductCategories (ProductID INTEGER, CategoryID INTEGER);" +
                     "CREATE TABLE IF NOT EXISTS Products (ProductID INTEGER PRIMARY KEY,ProductName TEXT NOT NULL,ProductDescription TEXT);" +
-                    "CREATE TABLE IF NOT EXISTS Categories (CategoryID INTEGER PRIMARY KEY AUTOINCREMENT, CategoryName TEXT);"+
-                    "CREATE TABLE IF NOT EXISTS Shelves (ShelfID INTEGER PRIMARY KEY,PosX INTEGER NOT NULL,PosY INTEGER NOT NULL,PosZ INTEGER NOT NULL,MaxShelfY INTEGER NOT NULL,InventoryCount INTEGER NOT NULL,IsDirty BOOLEAN NOT NULL,ShelfType TEXT);"+
-                    "CREATE TABLE IF NOT EXISTS Inventory (InventoryID INTEGER PRIMARY KEY,ProductID INTEGER NOT NULL,ShelfID INTEGER,PositionX INTEGER,PositionY INTEGER,PositionZ INTEGER,IsGoBack BOOLEAN DEFAULT FALSE,FOREIGN KEY (ProductID) REFERENCES Products(ProductID),FOREIGN KEY (ShelfID) REFERENCES Shelves(ShelfID));"+
+                    "CREATE TABLE IF NOT EXISTS Categories (CategoryID INTEGER PRIMARY KEY AUTOINCREMENT, CategoryName TEXT);" +
+                    "CREATE TABLE IF NOT EXISTS Shelves (ShelfID INTEGER PRIMARY KEY,PosX INTEGER NOT NULL,PosY INTEGER NOT NULL,PosZ INTEGER NOT NULL,MaxShelfY INTEGER NOT NULL,InventoryCount INTEGER NOT NULL,IsDirty BOOLEAN NOT NULL,ShelfType TEXT);" +
+                    "CREATE TABLE IF NOT EXISTS Inventory (InventoryID INTEGER PRIMARY KEY,ProductID INTEGER NOT NULL,ShelfID INTEGER,PositionX INTEGER,PositionY INTEGER,PositionZ INTEGER,IsGoBack BOOLEAN DEFAULT FALSE,FOREIGN KEY (ProductID) REFERENCES Products(ProductID),FOREIGN KEY (ShelfID) REFERENCES Shelves(ShelfID));" +
                     "CREATE TABLE IF NOT EXISTS ShelvingUi (ShelvingUiId INTEGER NOT NULL UNIQUE,Xanchor REAL NOT NULL,Yanchor REAL NOT NULL,Xsize REAL,Ysize REAL,ShelfID INTEGER NOT NULL,FOREIGN KEY(ShelfID) REFERENCES Shelves(ShelfID),PRIMARY KEY(ShelvingUiId));";
                 dbCmd.CommandText = sqlQuery;
                 dbCmd.ExecuteScalar();
@@ -81,7 +82,7 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    
+
 
     public void AddProduct(string productName)
     {
@@ -296,10 +297,11 @@ public class DatabaseManager : MonoBehaviour
         return products;
     }
 
-    
 
 
-    public void TestDatabaseFunctions() {
+
+    public void TestDatabaseFunctions()
+    {
         ClearTable("ProductCategories");
         ClearTable("Products");
         ClearTable("Categories");
@@ -332,7 +334,8 @@ public class DatabaseManager : MonoBehaviour
         Debug.Log("Adding shelves");
     }
 
-    public List<List<float>> getShelvesBackgroundData(int shelfId){
+    public List<List<float>> getShelvesBackgroundData(int shelfId)
+    {
         List<List<float>> shelfDimensionsList = new List<List<float>>();
 
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
@@ -353,11 +356,13 @@ public class DatabaseManager : MonoBehaviour
                         shelfDimensions.Add(reader.GetFloat(reader.GetOrdinal("Yanchor")));
                         shelfDimensions.Add(reader.GetFloat(reader.GetOrdinal("Xsize")));
                         //shelfDimensions.Add(reader.GetFloat(reader.GetOrdinal("Ysize")));
-                        
-                        if(reader.IsDBNull(reader.GetOrdinal("Ysize"))){
+
+                        if (reader.IsDBNull(reader.GetOrdinal("Ysize")))
+                        {
                             shelfDimensions.Add(-425f);
                         }
-                        else{
+                        else
+                        {
                             shelfDimensions.Add(reader.GetFloat(reader.GetOrdinal("Ysize")));
                             Debug.Log("Ysize is not null");
                         }
@@ -527,7 +532,7 @@ public class DatabaseManager : MonoBehaviour
                             reader.GetInt32(reader.GetOrdinal("PosX")),
                             reader.GetInt32(reader.GetOrdinal("PosY")),
                             reader.GetInt32(reader.GetOrdinal("PosZ")));
-                            reader.GetInt32(reader.GetOrdinal("ShelfID"));
+                        reader.GetInt32(reader.GetOrdinal("ShelfID"));
 
                         ShelfKey key = new ShelfKey(position);
 
@@ -560,7 +565,8 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    List<int> GetAllShelfIds(){
+    List<int> GetAllShelfIds()
+    {
         List<int> shelfIds = new List<int>();
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
         {
@@ -582,7 +588,8 @@ public class DatabaseManager : MonoBehaviour
         }
         return shelfIds;
     }
-    void AddPlaceholderShelf(int shelfId){
+    void AddPlaceholderShelf(int shelfId)
+    {
         // find all shelves, and their shelfid, and then add one shelf that has the an xanchor of 0, and a yanchor of 0, and a xsize of 165f, and a ysize of null
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
         {
@@ -598,7 +605,4 @@ public class DatabaseManager : MonoBehaviour
             dbConnection.Close();
         }
     }
-
-
-
 }

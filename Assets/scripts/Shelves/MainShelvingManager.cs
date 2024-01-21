@@ -18,8 +18,6 @@ public class MainShelvingManager : MonoBehaviour
     public TileBase shelfTile;
     public TileBase floorTile;
     
-    public string directoryPath;
-    public string filePath;
     public DatabaseManager databaseManager;
     public TriggerUI uiTrigger;
 
@@ -27,7 +25,6 @@ public class MainShelvingManager : MonoBehaviour
     {
         ShelvingScriptsDictionary = new Dictionary<ShelfKey, ShelvingData>();
         //PrintShelvingScriptsDictionary();
-        // TODO:JOSN DEADEND
         loadDB();
         //SaveAllShelvesData(filePath);
     }
@@ -64,9 +61,9 @@ public class MainShelvingManager : MonoBehaviour
     }
 
 
-    // <summary>
+    //<summary>
     /// Class <c>isThereAShelf</c> detects if there is a shelve at a given position
-    /// </summary>
+    ///</summary>
     public bool isThereAShelf(Vector3Int position){
         var localPlace = new Vector3Int(position.x, position.y, position.z);
         //Debug.Log("localPlace: " + localPlace);
