@@ -21,6 +21,7 @@ public class MainShelvingManager : MonoBehaviour
     public string directoryPath;
     public string filePath;
     public DatabaseManager databaseManager;
+    public TriggerUI uiTrigger;
 
     void Awake()
     {
@@ -60,11 +61,12 @@ public class MainShelvingManager : MonoBehaviour
         {
             // The file exists
             Debug.Log("File already exists at: " + filePath);
-            LoadAllShelvesData(filePath);
+            loadAllShelvesFromDataBase();
             
             //databaseManager.LoadAllShelvesData(ShelvingScriptsDictionary);
 
         }
+        printShelves();
 
     }
 
@@ -107,8 +109,24 @@ public class MainShelvingManager : MonoBehaviour
         
         if (isThereAShelf(position))
         {
+            ShelfKey key = new ShelfKey(position);
 
-            return ShelvingScriptsDictionary[new ShelfKey(position)].gridToString();
+            int shelfId = 1;
+            if (ShelvingScriptsDictionary.TryGetValue(key, out ShelvingData shelvingData))
+            {
+                // Key exists, and shelvingData is now the ShelvingData object associated with the key
+                shelfId = shelvingData.getShelfId();
+            }
+            List<List<float>> shelfDimensionsList = databaseManager.getShelvesBackgroundData(shelfId);
+            Debug.Log("shelfDimensionsList: " + shelfDimensionsList);
+            for(int i = 0; i < shelfDimensionsList.Count; i++){
+                for(int j = 0; j < shelfDimensionsList[i].Count; j++){
+                    Debug.Log("shelfDimensionsList[i][j]: " + shelfDimensionsList[i][j]);
+                }
+            }
+            uiTrigger.OnPointerClickShelfUI(shelfDimensionsList);
+            Debug.Log("key " + shelfId);
+            return ShelvingScriptsDictionary[key].gridToString();
         }
         return "no shelf";
     }
@@ -128,7 +146,7 @@ public class MainShelvingManager : MonoBehaviour
         }
     }
 
-    public void LoadAllShelvesData(string filePath)
+    public void LoadAllShelvesDataJson(string filePath)
     {
         if (!File.Exists(filePath))
         {
@@ -145,14 +163,24 @@ public class MainShelvingManager : MonoBehaviour
             ShelvingScriptsDictionary.Add(entry.key, entry.value);
             ShelvingScriptsDictionary[new ShelfKey(entry.key.GetPosition())].fillWithAir();
             //Debug.Log("entry.key.GetPosition(): " + entry.key.GetPosition());
-            PrintShelf(entry.value,entry.key.GetPosition());
+        
         }
        
         //TODO: Add in scene editing to add in the shelves
     }
 
+    void loadAllShelvesFromDataBase(){
+        ShelvingScriptsDictionary = databaseManager.LoadAllShelvesData(ShelvingScriptsDictionary);
+    }
 
 
+    private void printShelves(){
+        foreach (KeyValuePair<ShelfKey, ShelvingData> kvp in ShelvingScriptsDictionary)
+        {
+            Debug.Log("Key: " + kvp.Key + " Value: " + kvp.Value);
+            PrintShelf(kvp.Value, kvp.Key.GetPosition());
+        }
+    }
 
     public void PrintShelvingScriptsDictionary() {
         if (ShelvingScriptsDictionary == null) {
@@ -172,6 +200,8 @@ public class MainShelvingManager : MonoBehaviour
         tilemapFloor.SetTile(position,floorTile);
     }
 
-
+    public void addShelfToDatabaseDebug(){
+        databaseManager.DebugAddPlaceholderShelfToAllShelves();
+    }
 
 }

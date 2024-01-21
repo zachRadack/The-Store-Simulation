@@ -71,9 +71,10 @@ public class MoveOnTileMain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        databaseManager = FindObjectOfType<DatabaseManager>();
         pathfinder = new Pathfinder<Vector3Int>(DistanceFunc, connectionsAndCosts);
 
-        databaseManager = FindObjectOfType<DatabaseManager>();
+        
         
 
     }
@@ -123,9 +124,10 @@ public class MoveOnTileMain : MonoBehaviour
                 uiTrigger.OnPointerClickShelfUI(shelfDimensionsList);
             }else if(Input.GetKeyDown(KeyCode.O)){
                 if (databaseManager != null) {
-                    Debug.Log("DatabaseManager found in the scene!");
-                    databaseManager.TestDatabaseFunctions();
-                    MainShelvingManager.SaveAllShelvesData();
+                    //Debug.Log("DatabaseManager found in the scene!");
+                    //databaseManager.TestDatabaseFunctions();
+                    //MainShelvingManager.SaveAllShelvesData();
+                    MainShelvingManager.addShelfToDatabaseDebug();
                     Debug.Log("DatabaseManager finished testing database functions.");
                 } else {
                     Debug.LogError("DatabaseManager not found in the scene!");

@@ -17,6 +17,7 @@ public class ShelvingData
     [SerializeField]
     private Dictionary<ShelfGridKey, ShelfGrid> ShelfGridDictionary = new Dictionary<ShelfGridKey, ShelfGrid>();
     
+    public int shelfID;
 
 
 
@@ -130,5 +131,9 @@ public class ShelvingData
         {
             return null;
         }
+    }
+
+    public int getShelfId(){
+        return shelfID;
     }
 }

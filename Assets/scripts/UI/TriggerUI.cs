@@ -29,7 +29,7 @@ public class TriggerUI : MonoBehaviour
     {
         ShelfUIManagerScript.CreateCustomShelves(shelfDimensions);
     }
-
+    
     public void OnPointerClickShelfUI(List<List<float>> shelfDimensionsList)
     {
         //TODO: Implement an import that brings in the shelf data from the database, then use it to create the shelves according to the database.
@@ -55,4 +55,5 @@ public class TriggerUI : MonoBehaviour
         }
 
     }
+    
 }
