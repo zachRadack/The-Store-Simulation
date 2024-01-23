@@ -28,22 +28,19 @@ public class ShelfUIManager : MonoBehaviour
     public void OnButtonClick()
     {
         Debug.Log("Destroying UI element");
-        //gameObject.SetActive(false);
-
-        
-        foreach (Transform child in this.transform)
+        // TODO: There has to be better way to efficently remove relevant children. I may wanna make a list of gameobjects, so that it deletes only those so tags are freed up for other uses. Rather than all ui needing ShelfUIDoNotDestroy.
+        for (int i = this.transform.childCount - 1; i >= 0; i--)
         {
-            if (child == shelfOffButton.transform)
+            Transform child = this.transform.GetChild(i);
+            if (!child.CompareTag("ShelfUIDoNotDestroy"))
             {
-                // Deactivate the specified child
+                
+                Destroy(child.gameObject);
+            }else{
                 child.gameObject.SetActive(false);
             }
-            else
-            {
-                // Destroy all other children
-                Destroy(child.gameObject);
-            }
         }
+
     }
 
 
