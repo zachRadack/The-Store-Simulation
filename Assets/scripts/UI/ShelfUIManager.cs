@@ -11,6 +11,8 @@ public class ShelfUIManager : MonoBehaviour
     public GameObject shelfPrefabBackground;
     public GameObject shelfPrefabShelf;
 
+    public GameObject shelfOffButton;
+
     // this represents the sizeDelta y of the shelf, which is the height of the shelf.
     public float thicknessOfShelves = -452f;
 
@@ -26,50 +28,39 @@ public class ShelfUIManager : MonoBehaviour
     public void OnButtonClick()
     {
         Debug.Log("Destroying UI element");
-        gameObject.SetActive(false);
-    }
+        //gameObject.SetActive(false);
 
-    // CreateShelves now takes two parameters: numberOfShelves and shelfHeightPercent
-    public void CreateShelves(int numberOfShelves, float heightPercentage)
-    {
-        maxShelfCount = Mathf.Clamp(numberOfShelves, 1, defaultShelfCount);
-        shelfHeightPercentage = Mathf.Clamp(heightPercentage, 0, 100);
-
-        float screenWidth = Screen.width;
-        float screenHeight = Screen.height;
-        float buffer = 0.1f; // 10% buffer
-
-        float usableWidth = screenWidth * (1 - 2 * buffer);
-        float usableHeight = screenHeight * (1 - 2 * buffer);
-        float totalShelvesHeight = usableHeight * (shelfHeightPercentage / 100f);
-        float singleShelfHeight = totalShelvesHeight / maxShelfCount;
-        //Debug.Log("singleShelfHeight: " + singleShelfHeight);
-        float startYPosition = -(usableHeight / 2) + (singleShelfHeight / 2);
-
-        for (int i = 0; i < maxShelfCount; i++)
+        
+        foreach (Transform child in this.transform)
         {
-            GameObject shelf = Instantiate(shelfPrefabDebug, canvas.transform);
-            RectTransform rt = shelf.GetComponent<RectTransform>();
-
-            rt.sizeDelta = new Vector2(usableWidth - screenWidth, -(screenHeight-singleShelfHeight));
-            rt.anchoredPosition = new Vector2(0, startYPosition + (i * singleShelfHeight));
+            if (child == shelfOffButton.transform)
+            {
+                // Deactivate the specified child
+                child.gameObject.SetActive(false);
+            }
+            else
+            {
+                // Destroy all other children
+                Destroy(child.gameObject);
+            }
         }
     }
 
-    public void CreateCustomShelves(List<ShelfData> shelfDataList)
-    {
-        foreach (ShelfData shelfData in shelfDataList)
-        {
-            GameObject shelf = Instantiate(shelfPrefabDebug, canvas.transform);
-            RectTransform rt = shelf.GetComponent<RectTransform>();
 
-            // Set the size and position of the shelf based on ShelfData
-            rt.sizeDelta = new Vector2(shelfData.dimensions.x, shelfData.dimensions.y);
-            rt.anchoredPosition = new Vector2(shelfData.position.x, shelfData.position.y);
+    public void createEntireShelf(List<float> BackgroundshelfDimensions, List<List<float>> shelfDimensions)
+    {
+        shelfOffButton.SetActive(true);
+        CreateShelfBackground(BackgroundshelfDimensions);
+                for (int i = 0; i < shelfDimensions.Count; i++)
+        {
+            CreateCustomShelves(shelfDimensions[i]);
         }
     }
 
-    public void CreateShelfBackground(List<float> BackgroundshelfDimensions){
+    //<summary>
+    // Creates a shelf background based on the dimensions of the shelf
+    //</summary>
+    private void CreateShelfBackground(List<float> BackgroundshelfDimensions){
         GameObject shelf = Instantiate(shelfPrefabBackground, canvas.transform);
         RectTransform rt = shelf.GetComponent<RectTransform>();
 
@@ -77,7 +68,11 @@ public class ShelfUIManager : MonoBehaviour
         rt.sizeDelta = new Vector2(BackgroundshelfDimensions[2], BackgroundshelfDimensions[3]);
         rt.anchoredPosition = new Vector2(BackgroundshelfDimensions[0], BackgroundshelfDimensions[1]);
     }
-    public void CreateCustomShelves(List<float> shelfDimensions)
+
+    //<summary>
+    // Creates a single shelf based on the dimensions of the shelf
+    //</summary>
+    void CreateCustomShelves(List<float> shelfDimensions)
     {
         // shelfDimensions is a list of floats that contains the dimensions of the shelves. the first is x anchor, second is y anchor, third is x size delta, fourth is y size delta.
         // TODO: ShelfDimensions may have other variables later to create an air pocket above the shelf, to allow easier placing of product representations.

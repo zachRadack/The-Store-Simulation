@@ -223,6 +223,9 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
+    //<summary>
+    /// Class <c>GetCategoriesForProduct</c> gets all the categories for a given product
+    /// </summary>
     public List<string> GetCategoriesForProduct(int productId)
     {
         List<string> categories = new List<string>();
@@ -260,6 +263,9 @@ public class DatabaseManager : MonoBehaviour
         return categories;
     }
 
+    //<summary>
+    /// Class <c>GetProductsForCategory</c> gets all the products for a given category
+    /// </summary>
     public List<string> GetProductsForCategory(int categoryId)
     {
         List<string> products = new List<string>();
@@ -300,6 +306,10 @@ public class DatabaseManager : MonoBehaviour
 
 
 
+    //<summary>
+    /// Class <c>GetAllProducts</c> first cleans all relevant tables, then adds all products & categories to the database and 
+    /// readds them. This allows me to test to see if the database is working properly.
+    /// </summary>
     public void TestDatabaseFunctions()
     {
         ClearTable("ProductCategories");
@@ -415,9 +425,10 @@ public class DatabaseManager : MonoBehaviour
         return frontlineItems;
     }
 
-
-
-
+    // TODO: See if this is relevant. I forgot if this is used anywhere or plans to be.
+    // <summary>
+    // Class <c>GetShelfMatrix</c> gets the shelf matrix for a given shelf
+    // </summary>
     public List<List<List<int>>> GetShelfMatrix(int shelfId)
     {
         // Assuming you know the dimensions of the shelf matrix
@@ -445,6 +456,9 @@ public class DatabaseManager : MonoBehaviour
         return shelfMatrix;
     }
 
+    // <summary>
+    // Class <c>GetInventoryIdAtPosition</c> gets the inventory id at a given position
+    // </summary>
     private int GetInventoryIdAtPosition(int shelfId, int x, int y, int z)
     {
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
