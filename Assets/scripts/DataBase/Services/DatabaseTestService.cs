@@ -29,30 +29,35 @@ public class DatabaseTestService
         _tableManager.ClearTable("Products");
         _tableManager.ClearTable("Categories");
         _tableManager.ClearTable("Inventory");
+        
 
         // Add categories
         Debug.Log("Adding categories");
-        _categoryService.AddCategory("Snacks");
-        _categoryService.AddCategory("Beverages");
-        _categoryService.AddCategory("Desserts");
-        _categoryService.AddCategory("JunkFood");
+        // _categoryService.AddCategory("Snacks");
+        // _categoryService.AddCategory("Beverages");
+        // _categoryService.AddCategory("Desserts");
+        // _categoryService.AddCategory("JunkFood");
+
+        _categoryService.AddCategory(1,"Store Items");
+        _categoryService.AddCategory("Food",1,2);
+        _categoryService.AddCategory("Snacks",2,3);
+        _categoryService.AddCategory("Junk Food",2,4);
+        _categoryService.AddCategory("Chips",3,5);
 
         // Add products
         Debug.Log("Adding products");
         _productService.AddProduct("Dorito Chips");
-        _productService.AddProduct("Coca Cola");
 
-        int doritosId = 1;
-        int colaId = 2;
-        int snacksCategoryId = 1;
-        int beveragesCategoryId = 2;
-        int junkFoodCategoryId = 4;
+        int StoreItemsCategoryId = 1;
+        int FoodCategoryId = 2;
+        int SnacksCategoryId = 3;
+        int JunkFoodCategoryId = 4;
+        int ChipsCategoryId = 5;
 
         // Associate products with categories
-        _productCategoryService.AddProductToCategory(doritosId, snacksCategoryId);
-        _productCategoryService.AddProductToCategory(doritosId, junkFoodCategoryId);
-        _productCategoryService.AddProductToCategory(colaId, beveragesCategoryId);
-        _productCategoryService.AddProductToCategory(colaId, junkFoodCategoryId);
+        Debug.Log("Associating products with categories");
+        _productCategoryService.AddProductToCategory(1, ChipsCategoryId);
+        _productCategoryService.AddProductToCategory(1, JunkFoodCategoryId);
 
         // Add shelves logic here
         // TODO: Add shelves logic here
@@ -61,7 +66,13 @@ public class DatabaseTestService
         // Add inventory logic here
         _inventoryService.addInventoryItem(1,9);
         _inventoryService.addInventoryItem(2,9);
-        _inventoryService.addInventoryItem(1,9);
+
+        HashSet<int> categoryIds = _productCategoryService.GetAllCategoriesForProduct(1);
+        Debug.Log("Categories for product 1:" + categoryIds.Count);
+        foreach (int categoryId in categoryIds)
+        {
+            Debug.Log(_categoryService.getNameOfCategories(categoryId));
+        }
     }
 
 }

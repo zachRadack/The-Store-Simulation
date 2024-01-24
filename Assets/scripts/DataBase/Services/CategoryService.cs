@@ -33,6 +33,62 @@ public class CategoryService
         }
     }
 
+    public void AddCategory( int CategoryID,string categoryName){
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                string sqlQuery = "INSERT INTO Categories (CategoryName, CategoryID) VALUES (@CategoryName, @CategoryID)";
+                dbCmd.CommandText = sqlQuery;
+
+                IDbDataParameter categoryNameParam = dbCmd.CreateParameter();
+                categoryNameParam.ParameterName = "@CategoryName";
+                categoryNameParam.Value = categoryName;
+                dbCmd.Parameters.Add(categoryNameParam);
+
+                IDbDataParameter categoryIDParam = dbCmd.CreateParameter();
+                categoryIDParam.ParameterName = "@CategoryID";
+                categoryIDParam.Value = CategoryID;
+                dbCmd.Parameters.Add(categoryIDParam);
+
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+
+    public void AddCategory(string categoryName, int ParentCategoryID, int CategoryID){
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                string sqlQuery = "INSERT INTO Categories (CategoryName, ParentCategoryID, CategoryID) VALUES (@CategoryName, @ParentCategoryID, @CategoryID)";
+                dbCmd.CommandText = sqlQuery;
+
+                IDbDataParameter categoryNameParam = dbCmd.CreateParameter();
+                categoryNameParam.ParameterName = "@CategoryName";
+                categoryNameParam.Value = categoryName;
+                dbCmd.Parameters.Add(categoryNameParam);
+
+                IDbDataParameter parentCategoryIDParam = dbCmd.CreateParameter();
+                parentCategoryIDParam.ParameterName = "@ParentCategoryID";
+                parentCategoryIDParam.Value = ParentCategoryID;
+                dbCmd.Parameters.Add(parentCategoryIDParam);
+
+                IDbDataParameter categoryIDParam = dbCmd.CreateParameter();
+                categoryIDParam.ParameterName = "@CategoryID";
+                categoryIDParam.Value = CategoryID;
+                dbCmd.Parameters.Add(categoryIDParam);
+
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
     public void DeleteCategory(int categoryId)
     {
         using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
@@ -84,6 +140,29 @@ public class CategoryService
             dbConnection.Close();
         }
         return categories;
+    }
+
+    public string getNameOfCategories(int categoryId){
+        string categoryName = "";
+        using(IDbConnection dbConnection = _dbConnectionManager.CreateConnection()){
+            dbConnection.Open();
+            using(IDbCommand dbCmd = dbConnection.CreateCommand()){
+                string sqlQuery = "SELECT CategoryName FROM Categories WHERE CategoryID = @CategoryID";
+                dbCmd.CommandText = sqlQuery;
+                IDbDataParameter param = dbCmd.CreateParameter();
+                param.ParameterName = "@CategoryID";
+                param.Value = categoryId;
+                dbCmd.Parameters.Add(param);
+
+                using(IDataReader reader = dbCmd.ExecuteReader()){
+                    while(reader.Read()){
+                        categoryName = reader.GetString(0);
+                    }
+                }
+            }
+            dbConnection.Close();
+        }
+        return categoryName;
     }
 
 }
