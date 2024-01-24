@@ -6,8 +6,19 @@ using UnityEngine.UI;
 
 public class ShelfUIManager : MonoBehaviour
 {
-    public GameObject shelfPrefab; 
     public Canvas canvas;
+    public GameObject shelfPrefabDebug; 
+    public GameObject shelfPrefabBackground;
+    public GameObject shelfPrefabShelf;
+
+    public GameObject shelfOffButton;
+
+    // this represents the sizeDelta y of the shelf, which is the height of the shelf.
+    public float thicknessOfShelves = -452f;
+
+
+
+    // TODO: All of these variables are used in createshelves function, will probably be deleted later
     public int defaultShelfCount = 5;
      // Maximum number of shelves
     private int maxShelfCount;
@@ -17,48 +28,59 @@ public class ShelfUIManager : MonoBehaviour
     public void OnButtonClick()
     {
         Debug.Log("Destroying UI element");
-        gameObject.SetActive(false);
+        // TODO: There has to be better way to efficently remove relevant children. I may wanna make a list of gameobjects, so that it deletes only those so tags are freed up for other uses. Rather than all ui needing ShelfUIDoNotDestroy.
+        for (int i = this.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = this.transform.GetChild(i);
+            if (!child.CompareTag("ShelfUIDoNotDestroy"))
+            {
+                
+                Destroy(child.gameObject);
+            }else{
+                child.gameObject.SetActive(false);
+            }
+        }
+
     }
 
-    // CreateShelves now takes two parameters: numberOfShelves and shelfHeightPercent
-    public void CreateShelves(int numberOfShelves, float heightPercentage)
+
+    public void createEntireShelf(List<float> BackgroundshelfDimensions, List<List<float>> shelfDimensions)
     {
-        maxShelfCount = Mathf.Clamp(numberOfShelves, 1, defaultShelfCount);
-        shelfHeightPercentage = Mathf.Clamp(heightPercentage, 0, 100);
-
-        float screenWidth = Screen.width;
-        float screenHeight = Screen.height;
-        float buffer = 0.1f; // 10% buffer
-
-        float usableWidth = screenWidth * (1 - 2 * buffer);
-        float usableHeight = screenHeight * (1 - 2 * buffer);
-        float totalShelvesHeight = usableHeight * (shelfHeightPercentage / 100f);
-        float singleShelfHeight = totalShelvesHeight / maxShelfCount;
-        //Debug.Log("singleShelfHeight: " + singleShelfHeight);
-        float startYPosition = -(usableHeight / 2) + (singleShelfHeight / 2);
-
-        for (int i = 0; i < maxShelfCount; i++)
+        shelfOffButton.SetActive(true);
+        CreateShelfBackground(BackgroundshelfDimensions);
+                for (int i = 0; i < shelfDimensions.Count; i++)
         {
-            GameObject shelf = Instantiate(shelfPrefab, canvas.transform);
-            RectTransform rt = shelf.GetComponent<RectTransform>();
-
-            rt.sizeDelta = new Vector2(usableWidth - screenWidth, -(screenHeight-singleShelfHeight));
-            rt.anchoredPosition = new Vector2(0, startYPosition + (i * singleShelfHeight));
+            CreateCustomShelves(shelfDimensions[i]);
         }
     }
 
-    public void CreateCustomShelves(List<ShelfData> shelfDataList)
-    {
-        foreach (ShelfData shelfData in shelfDataList)
-        {
-            GameObject shelf = Instantiate(shelfPrefab, canvas.transform);
-            RectTransform rt = shelf.GetComponent<RectTransform>();
+    //<summary>
+    // Creates a shelf background based on the dimensions of the shelf
+    //</summary>
+    private void CreateShelfBackground(List<float> BackgroundshelfDimensions){
+        GameObject shelf = Instantiate(shelfPrefabBackground, canvas.transform);
+        RectTransform rt = shelf.GetComponent<RectTransform>();
 
-            // Set the size and position of the shelf based on ShelfData
-            rt.sizeDelta = new Vector2(shelfData.dimensions.x, shelfData.dimensions.y);
-            rt.anchoredPosition = new Vector2(shelfData.position.x, shelfData.position.y);
-        }
+        // Set the size and position of the shelf based on ShelfData
+        rt.sizeDelta = new Vector2(BackgroundshelfDimensions[2], BackgroundshelfDimensions[3]);
+        rt.anchoredPosition = new Vector2(BackgroundshelfDimensions[0], BackgroundshelfDimensions[1]);
     }
+
+    //<summary>
+    // Creates a single shelf based on the dimensions of the shelf
+    //</summary>
+    void CreateCustomShelves(List<float> shelfDimensions)
+    {
+        // shelfDimensions is a list of floats that contains the dimensions of the shelves. the first is x anchor, second is y anchor, third is x size delta, fourth is y size delta.
+        // TODO: ShelfDimensions may have other variables later to create an air pocket above the shelf, to allow easier placing of product representations.
+        GameObject shelf = Instantiate(shelfPrefabShelf, canvas.transform);
+        RectTransform rt = shelf.GetComponent<RectTransform>();
+
+        // Set the size and position of the shelf based on ShelfData
+        rt.sizeDelta = new Vector2(shelfDimensions[2], thicknessOfShelves);
+        rt.anchoredPosition = new Vector2(shelfDimensions[0], shelfDimensions[1]);
+    }
+
 }
 
 

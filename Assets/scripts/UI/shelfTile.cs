@@ -40,18 +40,6 @@ public class shelfTile : Tile
     private string name;
     
 
-    
-    // Serialize the shelf data to JSON
-    public string Serialize()
-    {
-        return JsonUtility.ToJson(this);
-    }
-
-    // Deserialize JSON data to update the shelf
-    public void Deserialize(string jsonData)
-    {
-        JsonUtility.FromJsonOverwrite(jsonData, this);
-    }
     // You can also add methods specific to the shelf
     public void Restock(int amount)
     {
