@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 
-public class ShelvingUiService : MonoBehaviour
+public class ShelvingUiService
 {
     private DatabaseConnectionManager _dbConnectionManager;
 

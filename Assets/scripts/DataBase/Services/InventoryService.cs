@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 
-public class InventoryService : MonoBehaviour
+public class InventoryService
 {
     private DatabaseConnectionManager _dbConnectionManager;
 

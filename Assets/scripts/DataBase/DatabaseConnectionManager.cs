@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 
 
 
-public class DatabaseConnectionManager : MonoBehaviour
+public class DatabaseConnectionManager
 {
     private string connectionString;
     private TableManager _TableMan;

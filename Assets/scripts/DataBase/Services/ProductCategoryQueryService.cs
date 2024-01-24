@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 
-public class ProductCategoryQueryService : MonoBehaviour
+public class ProductCategoryQueryService
 {
     private DatabaseConnectionManager _dbConnectionManager;
 

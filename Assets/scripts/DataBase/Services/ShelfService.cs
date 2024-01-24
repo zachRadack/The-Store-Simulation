@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
-public class ShelfService : MonoBehaviour
+public class ShelfService
 
 {
     private DatabaseConnectionManager _dbConnectionManager;

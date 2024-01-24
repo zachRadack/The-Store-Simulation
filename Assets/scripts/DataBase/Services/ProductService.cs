@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Data;
 
-public class ProductService : MonoBehaviour
+public class ProductService
 {
     private DatabaseConnectionManager _dbConnectionManager;
 
