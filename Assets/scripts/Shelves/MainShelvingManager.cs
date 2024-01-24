@@ -18,12 +18,18 @@ public class MainShelvingManager : MonoBehaviour
     public TileBase shelfTile;
     public TileBase floorTile;
     
-    public DatabaseManager databaseManager;
+    
     public TriggerUI uiTrigger;
 
+    private ShelvingUiService _shelvingUiService;
+    private ShelfService _shelfService;
     void Awake()
     {
         ShelvingScriptsDictionary = new Dictionary<ShelfKey, ShelvingData>();
+        DatabaseConnectionManager dbConnectionManager = new DatabaseConnectionManager();
+
+        _shelvingUiService = new ShelvingUiService(dbConnectionManager);
+        _shelfService = new ShelfService(dbConnectionManager);
         //PrintShelvingScriptsDictionary();
         loadDB();
         //SaveAllShelvesData(filePath);
@@ -57,7 +63,7 @@ public class MainShelvingManager : MonoBehaviour
     /// Class <c>addShelfToDatabaseDebug</c> adds a generic placeholder shelf to the database for every single shelve
     /// </summary>
     public void addShelfToDatabaseDebug(){
-        databaseManager.DebugAddPlaceholderShelfToAllShelves();
+        _shelfService.DebugAddPlaceholderShelfToAllShelves();
     }
 
 
@@ -87,7 +93,7 @@ public class MainShelvingManager : MonoBehaviour
                 // Key exists, and shelvingData is now the ShelvingData object associated with the key
                 shelfId = shelvingData.getShelfId();
             }
-            List<List<float>> shelfDimensionsList = databaseManager.getShelvesBackgroundData(shelfId);
+            List<List<float>> shelfDimensionsList = _shelvingUiService.getShelvesBackgroundData(shelfId);
             //Debug.Log("shelfDimensionsList: " + shelfDimensionsList);
             //for(int i = 0; i < shelfDimensionsList.Count; i++){
             //    for(int j = 0; j < shelfDimensionsList[i].Count; j++){
@@ -103,7 +109,7 @@ public class MainShelvingManager : MonoBehaviour
 
     public void SaveAllShelvesData()
     {
-        databaseManager.SaveAllShelvesData(ShelvingScriptsDictionary);
+        _shelfService.SaveAllShelvesData(ShelvingScriptsDictionary);
     }
     
     [System.Serializable]
@@ -118,7 +124,7 @@ public class MainShelvingManager : MonoBehaviour
 
 
     void loadAllShelvesFromDataBase(){
-        ShelvingScriptsDictionary = databaseManager.LoadAllShelvesData(ShelvingScriptsDictionary);
+        ShelvingScriptsDictionary = _shelfService.LoadAllShelvesData();
     }
 
 
