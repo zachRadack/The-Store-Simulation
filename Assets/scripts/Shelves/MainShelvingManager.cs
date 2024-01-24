@@ -31,6 +31,7 @@ public class MainShelvingManager : MonoBehaviour
         _shelvingUiService = new ShelvingUiService(dbConnectionManager);
         _shelfService = new ShelfService(dbConnectionManager);
         //PrintShelvingScriptsDictionary();
+        dbConnectionManager.InitializeConnection();
         loadDB();
         //SaveAllShelvesData(filePath);
     }
@@ -82,7 +83,8 @@ public class MainShelvingManager : MonoBehaviour
     }
 
     public string GetShelfTile(Vector3Int position){
-        
+        // TODO: ALTER THIS TO USE DATABASE
+
         if (isThereAShelf(position))
         {
             ShelfKey key = new ShelfKey(position);
@@ -92,17 +94,12 @@ public class MainShelvingManager : MonoBehaviour
             {
                 // Key exists, and shelvingData is now the ShelvingData object associated with the key
                 shelfId = shelvingData.getShelfId();
+            }else{
+                Debug.LogError("Key doesn't exist.");
             }
-            List<List<float>> shelfDimensionsList = _shelvingUiService.getShelvesBackgroundData(shelfId);
-            //Debug.Log("shelfDimensionsList: " + shelfDimensionsList);
-            //for(int i = 0; i < shelfDimensionsList.Count; i++){
-            //    for(int j = 0; j < shelfDimensionsList[i].Count; j++){
-            //        Debug.Log("shelfDimensionsList[i][j]: " + shelfDimensionsList[i][j]);
-            //    }
-            //}
-            uiTrigger.OnPointerClickShelfUI(shelfDimensionsList);
+            uiTrigger.OnPointerClickShelfUI(shelfId);
             //Debug.Log("key " + shelfId);
-            return ShelvingScriptsDictionary[key].gridToString();
+            return _shelfService.printNamesOfInventoryOnShelf(shelfId);
         }
         return "no shelf";
     }

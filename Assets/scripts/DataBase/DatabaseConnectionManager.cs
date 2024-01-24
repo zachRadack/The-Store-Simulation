@@ -24,7 +24,7 @@ public class DatabaseConnectionManager
         return new SqliteConnection(connectionString);
     }
 
-    private void InitializeConnection()
+    public void InitializeConnection()
     {
         string dbPath = "URI=file:" + Application.persistentDataPath + "/Database/MyDatabase.db";
         connectionString = dbPath;

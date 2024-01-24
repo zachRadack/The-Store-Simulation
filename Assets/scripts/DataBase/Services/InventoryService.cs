@@ -14,6 +14,7 @@ public class InventoryService
         _dbConnectionManager = dbConnectionManager;
     }
 
+
     public List<int> GetFrontlineItems(int shelfId)
     {
         List<int> frontlineItems = new List<int>();
@@ -102,6 +103,24 @@ public class InventoryService
                 object result = dbCmd.ExecuteScalar();
                 return result != null ? Convert.ToInt32(result) : -1; // Returns -1 if no item is found
             }
+        }
+    }
+
+    //add inventory item based on productid and shelfid
+    public void addInventoryItem(int productId, int shelfId)
+    {
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            Debug.Log("Adding inventory item");
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                dbCmd.CommandText = "INSERT INTO Inventory (ProductID, ShelfID) VALUES (@ProductID, @ShelfID)";
+                dbCmd.Parameters.Add(new SqliteParameter("@ProductID", productId));
+                dbCmd.Parameters.Add(new SqliteParameter("@ShelfID", shelfId));
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
         }
     }
 }

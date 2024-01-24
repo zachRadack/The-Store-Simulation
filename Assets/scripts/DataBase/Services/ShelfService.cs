@@ -142,4 +142,63 @@ public class ShelfService
             dbConnection.Close();
         }
     }
+
+    public string printNamesOfInventoryOnShelf(int shelfId)
+    {
+        string result = "";
+        List<int> ProductIds = new List<int>();
+        List<string> inventoryNames = new List<string>();
+        List<int> inventoryIds = new List<int>();
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            Debug.Log("Getting all shelf ids");
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                dbCmd.CommandText = "SELECT * FROM Inventory WHERE ShelfID = @ShelfID";
+                dbCmd.Parameters.Add(new SqliteParameter("@ShelfID", shelfId));
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    Debug.Log("Getting all inventory ids");
+                    Debug.Log("reader: " + reader);
+                    while (reader.Read())
+                    {
+                        ProductIds.Add(reader.GetInt32(reader.GetOrdinal("ProductID")));
+                        inventoryIds.Add(reader.GetInt32(reader.GetOrdinal("InventoryID")));
+                    }
+                }
+            }
+            dbConnection.Close();
+        }
+
+        using(IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            Debug.Log("Getting all shelf ids");
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                dbCmd.CommandText = "SELECT * FROM Products WHERE ProductID = @ProductID";
+                foreach (int ProductID in ProductIds)
+                {
+                    dbCmd.Parameters.Add(new SqliteParameter("@ProductID", ProductID));
+                    using (IDataReader reader = dbCmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            inventoryNames.Add(reader.GetString(reader.GetOrdinal("ProductName")));
+                        }
+                    }
+                }
+            }
+            dbConnection.Close();
+        }
+        // string should return both the inventory id and name
+        for(int i = 0; i < ProductIds.Count; i++)
+        {
+            result += ProductIds[i] + " " + inventoryNames[i] + " Inventory ID: " + inventoryIds[i] + "\n";
+        }
+
+        Debug.Log("result: " + result);
+        return result;
+    }
 }

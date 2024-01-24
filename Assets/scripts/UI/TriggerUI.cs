@@ -13,13 +13,18 @@ public class TriggerUI : MonoBehaviour
     public ShelfUIManager ShelfUIManagerScript;
     public MainShelvingManager MainShelvingManager;
     public static RectTransform CanvasRectTransform;
+    public DatabaseConnectionManager dbConnectionManager;
+    private ShelvingUiService _shelvingUiService;
 
     void Awake()
     {
         CanvasRectTransform = this.gameObject.GetComponent<RectTransform>();
+        dbConnectionManager = new DatabaseConnectionManager();
+        _shelvingUiService = new ShelvingUiService(dbConnectionManager);
     }
-    public void OnPointerClickShelfUI(List<List<float>> shelfDimensionsList)
+    public void OnPointerClickShelfUI(int shelfId)
     {
+        List<List<float>> shelfDimensionsList = _shelvingUiService.getShelvesBackgroundData(shelfId);
         //TODO: Implement an import that brings in the shelf data from the database, then use it to create the shelves according to the database.
         List<float> BackgroundshelfDimensions = new List<float>();
         bool debugOn = true;

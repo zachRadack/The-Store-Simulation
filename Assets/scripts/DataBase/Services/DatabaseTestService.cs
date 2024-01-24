@@ -9,6 +9,7 @@ public class DatabaseTestService
     private ProductService _productService;
     private ProductCategoryService _productCategoryService;
     private TableManager _tableManager;
+    private InventoryService _inventoryService;
     // Other services as needed
 
     public DatabaseTestService(DatabaseConnectionManager dbConnectionManager)
@@ -17,6 +18,7 @@ public class DatabaseTestService
         _productService = new ProductService(dbConnectionManager);
         _productCategoryService = new ProductCategoryService(dbConnectionManager);
         _tableManager = new TableManager(dbConnectionManager);
+        _inventoryService = new InventoryService(dbConnectionManager);
         // Initialize other services as needed
     }
 
@@ -26,6 +28,7 @@ public class DatabaseTestService
         _tableManager.ClearTable("ProductCategories");
         _tableManager.ClearTable("Products");
         _tableManager.ClearTable("Categories");
+        _tableManager.ClearTable("Inventory");
 
         // Add categories
         Debug.Log("Adding categories");
@@ -54,6 +57,11 @@ public class DatabaseTestService
         // Add shelves logic here
         // TODO: Add shelves logic here
         Debug.Log("Adding shelves");
+
+        // Add inventory logic here
+        _inventoryService.addInventoryItem(1,9);
+        _inventoryService.addInventoryItem(2,9);
+        _inventoryService.addInventoryItem(1,9);
     }
 
 }

@@ -20,6 +20,9 @@ public class MoveOnTileMain : MonoBehaviour
 
     public int debugShelfCount = 5;
 
+    private DatabaseConnectionManager dbConnectionManager;
+    private DatabaseTestService _databaseTestService;
+
 
     [System.Serializable]
     public struct TileAndMovementCost
@@ -71,7 +74,8 @@ public class MoveOnTileMain : MonoBehaviour
 
         pathfinder = new Pathfinder<Vector3Int>(DistanceFunc, connectionsAndCosts);
 
-
+        dbConnectionManager = new DatabaseConnectionManager();
+        _databaseTestService = new DatabaseTestService(dbConnectionManager);
 
     }
 
@@ -117,9 +121,9 @@ public class MoveOnTileMain : MonoBehaviour
                     shelfDimensionsSmall.Add(-165f);
                     shelfDimensionsSmall.Add(0f);
                 shelfDimensionsList.Add(shelfDimensionsSmall);
-                uiTrigger.OnPointerClickShelfUI(shelfDimensionsList);
+                //uiTrigger.OnPointerClickShelfUI(shelfDimensionsList);
             }else if(Input.GetKeyDown(KeyCode.O)){
-                MainShelvingManager.addShelfToDatabaseDebug();
+                _databaseTestService.TestDatabaseFunctions();
             }
 
         }

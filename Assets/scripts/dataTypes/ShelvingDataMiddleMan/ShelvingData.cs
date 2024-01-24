@@ -22,6 +22,7 @@ public class ShelvingData
 
 
 
+
     public void fillWithAir(){
         for (int y = 0; y < maxShelfY; y++){
             for (int x = 0; x < maxShelfX; x++){
