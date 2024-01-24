@@ -47,6 +47,7 @@ public class DatabaseTestService
         // Add products
         Debug.Log("Adding products");
         _productService.AddProduct("Dorito Chips");
+        _productService.AddProduct("Spicy Dorito Chips");
 
         int StoreItemsCategoryId = 1;
         int FoodCategoryId = 2;
@@ -58,6 +59,8 @@ public class DatabaseTestService
         Debug.Log("Associating products with categories");
         _productCategoryService.AddProductToCategory(1, ChipsCategoryId);
         _productCategoryService.AddProductToCategory(1, JunkFoodCategoryId);
+        _productCategoryService.AddProductToCategory(2, ChipsCategoryId);
+        _productCategoryService.AddProductToCategory(2, JunkFoodCategoryId);
 
         // Add shelves logic here
         // TODO: Add shelves logic here
@@ -66,6 +69,8 @@ public class DatabaseTestService
         // Add inventory logic here
         _inventoryService.addInventoryItem(1,9);
         _inventoryService.addInventoryItem(2,9);
+        _inventoryService.addInventoryItem(1,9);
+
 
         HashSet<int> categoryIds = _productCategoryService.GetAllCategoriesForProduct(1);
         Debug.Log("Categories for product 1:" + categoryIds.Count);

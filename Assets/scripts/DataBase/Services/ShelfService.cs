@@ -192,13 +192,17 @@ public class ShelfService
             }
             dbConnection.Close();
         }
+        Debug.Log("ProductIds: " + ProductIds.Count);
+        Debug.Log("inventoryNames: " + inventoryNames.Count);
+        Debug.Log("inventoryIds: " + inventoryIds.Count);
         // string should return both the inventory id and name
         for(int i = 0; i < ProductIds.Count; i++)
         {
+            Debug.Log("ProductIds[i]: " + ProductIds[i]);
             result += ProductIds[i] + " " + inventoryNames[i] + " Inventory ID: " + inventoryIds[i] + "\n";
         }
-
-        Debug.Log("result: " + result);
+        Debug.Log("ttttttttttttt ");
+        Debug.Log(result);
         return result;
     }
 }
