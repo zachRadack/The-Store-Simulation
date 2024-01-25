@@ -68,7 +68,7 @@ public class DatabaseTestService
 
         // Add inventory logic here
         _inventoryService.addInventoryItem(1,9);
-        _inventoryService.addInventoryItem(2,9);
+        _inventoryService.addInventoryItem(2,19);
         _inventoryService.addInventoryItem(1,9);
 
 

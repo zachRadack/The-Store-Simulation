@@ -21,6 +21,8 @@ public class MainShelvingManager : MonoBehaviour
     
     public TriggerUI uiTrigger;
 
+    public CategoryReach _categoryReach;
+
     private ShelvingUiService _shelvingUiService;
     private ShelfService _shelfService;
     void Awake()
@@ -64,7 +66,7 @@ public class MainShelvingManager : MonoBehaviour
     /// Class <c>addShelfToDatabaseDebug</c> adds a generic placeholder shelf to the database for every single shelve
     /// </summary>
     public void addShelfToDatabaseDebug(){
-        _shelfService.DebugAddPlaceholderShelfToAllShelves();
+        _shelfService.AddPlaceholderShelfToAllShelvesDebug();
     }
 
 
@@ -149,6 +151,32 @@ public class MainShelvingManager : MonoBehaviour
     public void PrintShelf(ShelvingData shelf, Vector3Int position){
         tilemap.SetTile(position,shelfTile);
         tilemapFloor.SetTile(position,floorTile);
+    }
+
+    public int getShelfId(Vector3Int position){
+        ShelfKey key = new ShelfKey(position);
+        int shelfId = 1;
+        if (ShelvingScriptsDictionary.TryGetValue(key, out ShelvingData shelvingData))
+        {
+            // Key exists, and shelvingData is now the ShelvingData object associated with the key
+            shelfId = shelvingData.getShelfId();
+        }else{
+            Debug.LogError("Key doesn't exist.");
+            return -1;
+        }
+        return shelfId;
+    }
+
+    public void categoryReachPrintCategories(int categoryID){
+        // find all shelves that have categoryID in them and then visualize them using _categoryReach
+        List<int> shelves = _shelfService.findShelvesWithCategory(categoryID);
+        Debug.Log("PAAAAAAAAAAAINNNNN" + shelves.Count);
+        foreach (int shelf in shelves){
+            Vector3Int shelfPosition = _shelfService.getShelfPosition(shelf);
+            Debug.Log("shelfPosition: " + shelfPosition);
+            
+            _categoryReach.AddCategoryReach(shelfPosition, 1f);
+        }
     }
 
 

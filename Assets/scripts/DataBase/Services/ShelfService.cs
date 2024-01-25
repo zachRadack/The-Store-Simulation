@@ -89,11 +89,11 @@ public class ShelfService
             }
             dbConnection.Close();
         }
-        Debug.Log("ShelvingScriptsDictionary: " + shelvingScriptsDictionary.Count);
+        //Debug.Log("ShelvingScriptsDictionary: " + shelvingScriptsDictionary.Count);
         return shelvingScriptsDictionary;
     }
 
-    public void DebugAddPlaceholderShelfToAllShelves()
+    public void AddPlaceholderShelfToAllShelvesDebug()
     {
         List<int> shelfIds = GetAllShelfIds();
         foreach (int shelfId in shelfIds)
@@ -145,6 +145,7 @@ public class ShelfService
 
     public string printNamesOfInventoryOnShelf(int shelfId)
     {
+        Debug.Log("shelfId: "+ shelfId);
         string result = "";
         List<int> ProductIds = new List<int>();
         List<string> inventoryNames = new List<string>();
@@ -152,15 +153,15 @@ public class ShelfService
         using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
         {
             dbConnection.Open();
-            Debug.Log("Getting all shelf ids");
+            //Debug.Log("Getting all shelf ids");
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
                 dbCmd.CommandText = "SELECT * FROM Inventory WHERE ShelfID = @ShelfID";
                 dbCmd.Parameters.Add(new SqliteParameter("@ShelfID", shelfId));
                 using (IDataReader reader = dbCmd.ExecuteReader())
                 {
-                    Debug.Log("Getting all inventory ids");
-                    Debug.Log("reader: " + reader);
+                    //Debug.Log("Getting all inventory ids");
+                    //Debug.Log("reader: " + reader);
                     while (reader.Read())
                     {
                         ProductIds.Add(reader.GetInt32(reader.GetOrdinal("ProductID")));
@@ -174,7 +175,7 @@ public class ShelfService
         using(IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
         {
             dbConnection.Open();
-            Debug.Log("Getting all shelf ids");
+            //Debug.Log("Getting all shelf ids");
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
                 dbCmd.CommandText = "SELECT * FROM Products WHERE ProductID = @ProductID";
@@ -192,17 +193,112 @@ public class ShelfService
             }
             dbConnection.Close();
         }
-        Debug.Log("ProductIds: " + ProductIds.Count);
-        Debug.Log("inventoryNames: " + inventoryNames.Count);
-        Debug.Log("inventoryIds: " + inventoryIds.Count);
+        //Debug.Log("ProductIds: " + ProductIds.Count);
+        //Debug.Log("inventoryNames: " + inventoryNames.Count);
+        //Debug.Log("inventoryIds: " + inventoryIds.Count);
         // string should return both the inventory id and name
         for(int i = 0; i < ProductIds.Count; i++)
         {
             Debug.Log("ProductIds[i]: " + ProductIds[i]);
             result += ProductIds[i] + " " + inventoryNames[i] + " Inventory ID: " + inventoryIds[i] + "\n";
         }
-        Debug.Log("ttttttttttttt ");
-        Debug.Log(result);
+        //Debug.Log("ttttttttttttt ");
+        //Debug.Log(result);
         return result;
+    }
+
+
+    public List<int> getProductIdsOnShelf(int shelfId)
+    {
+        List<int> ProductIds = new List<int>();
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                dbCmd.CommandText = "SELECT * FROM Inventory WHERE ShelfID = @ShelfID";
+                dbCmd.Parameters.Add(new SqliteParameter("@ShelfID", shelfId));
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        ProductIds.Add(reader.GetInt32(reader.GetOrdinal("ProductID")));
+                    }
+                }
+            }
+            dbConnection.Close();
+        }
+        return ProductIds;
+    }
+
+    public List<int> findShelvesWithCategory(int categoryID){
+        List<int> shelfIds = new List<int>();
+        Debug.Log("categoryID: " + categoryID);
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            //Debug.Log("Getting all shelf ids");
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                dbCmd.CommandText = @"
+                SELECT DISTINCT Shelves.ShelfID 
+                FROM Shelves 
+                INNER JOIN Inventory ON Shelves.ShelfID = Inventory.ShelfID 
+                INNER JOIN Products ON Inventory.ProductID = Products.ProductID 
+                INNER JOIN ProductCategories ON Products.ProductID = ProductCategories.ProductID 
+                WHERE ProductCategories.CategoryID = @CategoryID";
+
+                dbCmd.Parameters.Add(new SqliteParameter("@CategoryID", categoryID));
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    //Debug.Log("Getting all inventory ids");
+                    //Debug.Log("reader: " + reader);
+                    while (reader.Read())
+                    {
+
+
+                        int shelfIdIndex = reader.GetOrdinal("ShelfID");
+                        if (shelfIdIndex >= 0)
+                        {
+                            shelfIds.Add(reader.GetInt32(shelfIdIndex));
+                        }
+                        else
+                        {
+                            Debug.LogWarning("ShelfID column not found");
+                        }
+                    }
+                }
+            }
+            dbConnection.Close();
+        }
+        return shelfIds;
+    }
+    public Vector3Int getShelfPosition(int shelfId){
+        Vector3Int shelfPosition = new Vector3Int();
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            //Debug.Log("Getting all shelf ids");
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                dbCmd.CommandText = "SELECT * FROM Shelves WHERE ShelfID = @ShelfID";
+                dbCmd.Parameters.Add(new SqliteParameter("@ShelfID", shelfId));
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    //Debug.Log("Getting all inventory ids");
+                    //Debug.Log("reader: " + reader);
+                    while (reader.Read())
+                    {
+                        shelfPosition = new Vector3Int(
+                            reader.GetInt32(reader.GetOrdinal("PosX")),
+                            reader.GetInt32(reader.GetOrdinal("PosY")),
+                            reader.GetInt32(reader.GetOrdinal("PosZ")));
+                    }
+                }
+            }
+            dbConnection.Close();
+        }
+        return shelfPosition;
     }
 }

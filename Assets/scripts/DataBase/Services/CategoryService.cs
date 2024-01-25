@@ -165,4 +165,21 @@ public class CategoryService
         return categoryName;
     }
 
+    // this gets all the categories and returns them in a list
+    public List<int> getAllCategories(){
+        List<int> categoryIDs = new List<int>();
+        using(IDbConnection dbConnection = _dbConnectionManager.CreateConnection()){
+            dbConnection.Open();
+            using(IDbCommand dbCmd = dbConnection.CreateCommand()){
+                string sqlQuery = "SELECT CategoryID FROM Categories";
+                dbCmd.CommandText = sqlQuery;
+                using(IDataReader reader = dbCmd.ExecuteReader()){
+                    while(reader.Read()){
+                        categoryIDs.Add(reader.GetInt32(0));
+                    }
+                }
+            }
+        }
+        return categoryIDs;
+    }
 }

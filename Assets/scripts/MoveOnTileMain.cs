@@ -22,6 +22,9 @@ public class MoveOnTileMain : MonoBehaviour
 
     private DatabaseConnectionManager dbConnectionManager;
     private DatabaseTestService _databaseTestService;
+    private CategoryService _categoryService;
+
+    public CategoryReach _categoryReach;
 
 
     [System.Serializable]
@@ -51,19 +54,13 @@ public class MoveOnTileMain : MonoBehaviour
         {
             foreach (TileAndMovementCost tmc in tiles)
             {
-
-                if (tilemap.GetTile(a+dir)==tmc.tile)
-                {
-                    if (tmc.movable) {
-                        // this is where you would add the movement cost of the tile
-                        // for example if you have a tile that costs 2 to move on you would do
-                        //Debug.Log("tile cost is " + tmc.movementCost);
-                        result.Add(a + dir, tmc.movementCost);
-                    }
-
+                if ((tilemap.GetTile(a+dir)==tmc.tile)&&(tmc.movable)){
+                    // this is where you would add the movement cost of the tile
+                    // for example if you have a tile that costs 2 to move on you would do
+                    //Debug.Log("tile cost is " + tmc.movementCost);
+                    result.Add(a + dir, tmc.movementCost);
                 }
             }
-                
         }
         return result;
     }
@@ -77,6 +74,14 @@ public class MoveOnTileMain : MonoBehaviour
         dbConnectionManager = new DatabaseConnectionManager();
         _databaseTestService = new DatabaseTestService(dbConnectionManager);
 
+        // get all category ids, and print them out each using categoryReachPrintCategories in MainShelvingManager
+        _categoryService = new CategoryService(dbConnectionManager);
+        List<int> categoryIds = _categoryService.getAllCategories();
+        
+        foreach (int categoryId in categoryIds){
+            Debug.Log("Category ID startsss: " + categoryId);
+            MainShelvingManager.categoryReachPrintCategories(categoryId);
+        }
     }
 
     // Update is called once per frame
@@ -86,20 +91,7 @@ public class MoveOnTileMain : MonoBehaviour
             if (Input.GetMouseButtonDown(1) ){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 target.z = 0;
-                MoveTo(target);
-
-                if(MainShelvingManager.isThereAShelf(target)){
-                    if(verbose){
-                        Debug.Log("You Targeted:" +target +" there is a shelf at "  );
-                    }
-                    //MainShelvingManager.testAddItemToShelf(target);
-                    
-                }
-                else{
-                    if(verbose){
-                        Debug.Log("You Targeted:" +target +" there is no shelf at " );
-                    }
-                }
+                _categoryReach.AddCategoryReach(target,3f);
             }else if (Input.GetMouseButtonDown(0) ){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 //Debug.Log(target);
@@ -129,6 +121,24 @@ public class MoveOnTileMain : MonoBehaviour
         }
     }
     
+
+    void mouseClickDebugShelves(Vector3Int target){
+        MoveTo(target);
+        if(MainShelvingManager.isThereAShelf(target)){
+            if(verbose){
+                Debug.Log("You Targeted:" +target +" there is a shelf at "  );
+            }
+            //MainShelvingManager.testAddItemToShelf(target);
+            
+        }
+        else{
+            if(verbose){
+                Debug.Log("You Targeted:" +target +" there is no shelf at " );
+            }
+        }
+    }
+
+
     /**
         * This starts a coroutine that moves the entity to the target tile.
     **/
