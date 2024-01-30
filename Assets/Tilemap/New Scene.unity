@@ -790,6 +790,7 @@ MonoBehaviour:
   shelfTile: {fileID: 11400000, guid: 14435b4119c8c1b46b55aae527ce1d02, type: 2}
   floorTile: {fileID: 11400000, guid: 9a59af60c3954d94d8203bfa99d94284, type: 2}
   uiTrigger: {fileID: 1303445769}
+  _categoryReach: {fileID: 1876618138}
 --- !u!4 &1011787602
 Transform:
   m_ObjectHideFlags: 0

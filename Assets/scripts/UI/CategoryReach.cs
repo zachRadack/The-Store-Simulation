@@ -19,8 +19,34 @@ public class CategoryReach : MonoBehaviour
     public void AddCategoryReach(Vector3Int gridPosition, float reachAmount)
     {
         Debug.Log("AddCategoryReach: gridPosition: " + gridPosition + " reachAmount: " + reachAmount);
-        changeReach(gridPosition, reachAmount);
+        //changeReach(gridPosition, reachAmount);
+        addReachAroundLocalArea(gridPosition, reachAmount);
+    }
+
+    public void visualizeAllReach()
+    {
         VisualizeReach();
+    }
+
+    public float GetReach(Vector3Int gridPosition)
+    {
+        if(_categoryReachTiles.ContainsKey(gridPosition))
+        {
+            return _categoryReachTiles[gridPosition];
+        }
+        else
+        {
+            return 0f;
+        }
+    }
+
+    private void addReachAroundLocalArea(Vector3Int gridPosition, float reachAmount){
+        for(int x = gridPosition.x - 1; x <= gridPosition.x + 1; x++){
+            for(int y = gridPosition.y - 1; y <= gridPosition.y + 1; y++){
+                Vector3Int newGridPosition = new Vector3Int(x, y, gridPosition.z);
+                changeReach(newGridPosition, reachAmount);
+            }
+        }
     }
 
     private void changeReach(Vector3Int gridPosition, float changeBy)
@@ -58,4 +84,6 @@ public class CategoryReach : MonoBehaviour
 
         }
     }
+
+    
 }

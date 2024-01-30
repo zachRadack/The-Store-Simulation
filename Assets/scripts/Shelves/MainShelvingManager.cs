@@ -177,6 +177,8 @@ public class MainShelvingManager : MonoBehaviour
             
             _categoryReach.AddCategoryReach(shelfPosition, 1f);
         }
+
+        _categoryReach.visualizeAllReach();
     }
 
 

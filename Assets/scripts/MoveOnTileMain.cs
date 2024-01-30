@@ -98,22 +98,7 @@ public class MoveOnTileMain : MonoBehaviour
                 //Debug.Log(currentCellPos);
                 target.z = 0;
                 Debug.Log(MainShelvingManager.GetShelfTile(target));
-            }else if(Input.GetKeyDown(KeyCode.I)){
-
-                List<ShelfData> shelfDimensions = new List<ShelfData>();
-                shelfDimensions.Add(new ShelfData(new Vector2(20,10),new Vector2(150,0)));
-                shelfDimensions.Add(new ShelfData(new Vector2(20,10),new Vector2(100,100)));
-                //uiTrigger.OnPointerClick(debugShelfCount,100f);
-                //uiTrigger.OnPointerClickCustom(shelfDimensions);
-                //List<List<float>> shelfDimensionsList
-                List<List<float>> shelfDimensionsList = new List<List<float>>();
-                    List<float> shelfDimensionsSmall = new List<float>();
-                    shelfDimensionsSmall.Add(0f);
-                    shelfDimensionsSmall.Add(0f);
-                    shelfDimensionsSmall.Add(-165f);
-                    shelfDimensionsSmall.Add(0f);
-                shelfDimensionsList.Add(shelfDimensionsSmall);
-                //uiTrigger.OnPointerClickShelfUI(shelfDimensionsList);
+                Debug.Log("Reach category:"+_categoryReach.GetReach(target));
             }else if(Input.GetKeyDown(KeyCode.O)){
                 _databaseTestService.TestDatabaseFunctions();
             }

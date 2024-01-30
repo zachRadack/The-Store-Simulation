@@ -70,6 +70,9 @@ public class DatabaseTestService
         _inventoryService.addInventoryItem(1,9);
         _inventoryService.addInventoryItem(2,19);
         _inventoryService.addInventoryItem(1,9);
+        _inventoryService.addInventoryItem(2,20);
+        _inventoryService.addInventoryItem(2,21);
+        _inventoryService.addInventoryItem(2,22);
 
 
         HashSet<int> categoryIds = _productCategoryService.GetAllCategoriesForProduct(1);
