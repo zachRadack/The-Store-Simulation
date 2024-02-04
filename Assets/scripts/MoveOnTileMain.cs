@@ -18,8 +18,6 @@ public class MoveOnTileMain : MonoBehaviour
     
     public MainShelvingManager MainShelvingManager;
 
-    public int debugShelfCount = 5;
-
     private DatabaseConnectionManager dbConnectionManager;
     private DatabaseTestService _databaseTestService;
     private CategoryService _categoryService;
@@ -39,14 +37,19 @@ public class MoveOnTileMain : MonoBehaviour
     [Range(0.001f,1f)]
     public float stepTime;
 
-    //distance function for the pathfinder
+    /**
+    * This function returns the distance between two tiles
+    */
     public float DistanceFunc(Vector3Int a, Vector3Int b)
     {
         return (a-b).sqrMagnitude;
     }
 
 
-    //returns a dictionary of all the tiles that are connected to a and their movement cost
+
+    /**
+    * This function returns a dictionary of the connections and costs of the tile at a given position
+    */
     public Dictionary<Vector3Int,float> connectionsAndCosts(Vector3Int a)
     {
         Dictionary<Vector3Int, float> result= new Dictionary<Vector3Int, float>();
@@ -65,7 +68,6 @@ public class MoveOnTileMain : MonoBehaviour
         return result;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
 
@@ -84,14 +86,16 @@ public class MoveOnTileMain : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if(entityFollowsRightClick){
             if (Input.GetMouseButtonDown(1) ){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 target.z = 0;
-                _categoryReach.AddCategoryReach(target,3f);
+                //_categoryReach.AddCategoryReach(target,3f);
+                mouseClickDebugShelves(target);
+                Debug.Log("Shelfid: "+MainShelvingManager.getShelfId(target));
             }else if (Input.GetMouseButtonDown(0) ){
                 Vector3Int target = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 //Debug.Log(target);
@@ -101,15 +105,23 @@ public class MoveOnTileMain : MonoBehaviour
                 Debug.Log("Reach category:"+_categoryReach.GetReach(target));
             }else if(Input.GetKeyDown(KeyCode.O)){
                 _databaseTestService.TestDatabaseFunctions();
+            }else if(Input.GetKeyDown(KeyCode.I)){
+                MainShelvingManager.categoryReachPrintCategories(1);
             }
 
         }
     }
     
 
+    /**
+        * This function is called when the entity is clicked on a tile.
+        * It checks if there is a shelf at the target tile and if there is it calls the function to add an item to the shelf.
+        * a debug tool for testing
+    **/
     void mouseClickDebugShelves(Vector3Int target){
         MoveTo(target);
         if(MainShelvingManager.isThereAShelf(target)){
+
             if(verbose){
                 Debug.Log("You Targeted:" +target +" there is a shelf at "  );
             }
@@ -187,7 +199,9 @@ public class MoveOnTileMain : MonoBehaviour
 
     }
 
-
+    /**
+        * This function returns a dictionary of the connections and costs of the tile at a given position
+    **/
     Dictionary<Vector3Int, float> GetNeighbourNodes(Vector3Int pos){
         Dictionary<Vector3Int, float> neighbours = new Dictionary<Vector3Int, float>();
         for (int i = -1; i < 2; i++){
