@@ -84,7 +84,6 @@ public class MoveOnTileMain : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(entityFollowsRightClick){
