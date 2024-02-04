@@ -5,16 +5,24 @@ using UnityEngine;
 using System.Data;
 using Mono.Data.Sqlite;
 
+/**
+* Class <c>InventoryService</c> is a service class that handles all [Inventory](Inventory.md) related database operations
+*/
 public class InventoryService
 {
     private DatabaseConnectionManager _dbConnectionManager;
 
+    /**
+    * Constructor for the <c>InventoryService</c> class
+    */
     public InventoryService(DatabaseConnectionManager dbConnectionManager)
     {
         _dbConnectionManager = dbConnectionManager;
     }
 
-
+    /**
+    * <c>GetFrontlineItems</c> returns the inventoryid of the item at the front of the shelf
+    */
     public List<int> GetFrontlineItems(int shelfId)
     {
         List<int> frontlineItems = new List<int>();
@@ -106,7 +114,9 @@ public class InventoryService
         }
     }
 
-    //add inventory item based on productid and shelfid
+    /**
+    * add inventory item based on productid and shelfid
+    */
     public void addInventoryItem(int productId, int shelfId)
     {
         using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())

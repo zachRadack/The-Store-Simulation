@@ -14,6 +14,9 @@ public class ShelfService
         _dbConnectionManager = dbConnectionManager;
     }
 
+    /**
+    * Goes through every shelf, sending them all through SaveShelfData
+    */
     public void SaveAllShelvesData(Dictionary<ShelfKey, ShelvingData> shelvingScriptsDictionary)
     {
         foreach (KeyValuePair<ShelfKey, ShelvingData> pair in shelvingScriptsDictionary)
@@ -22,6 +25,9 @@ public class ShelfService
         }
     }
 
+    /**
+    * Saves the shelf data to the database
+    */
     private void SaveShelfData(ShelfKey key, ShelvingData data)
     {
         using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
@@ -52,6 +58,9 @@ public class ShelfService
         }
     }
 
+    /**
+    * Loads all shelves from the database
+    */
     public Dictionary<ShelfKey, ShelvingData> LoadAllShelvesData()
     {
         Dictionary<ShelfKey, ShelvingData> shelvingScriptsDictionary = new Dictionary<ShelfKey, ShelvingData>();
@@ -93,6 +102,9 @@ public class ShelfService
         return shelvingScriptsDictionary;
     }
 
+    /**
+    * Debug tool, this adds a placeholder shelf to every shelf in the database
+    */
     public void AddPlaceholderShelfToAllShelvesDebug()
     {
         List<int> shelfIds = GetAllShelfIds();
@@ -102,6 +114,30 @@ public class ShelfService
         }
     }
 
+    /**
+    * Debug tool, Adds a placeholder shelf to a single shelf in the database
+    */
+    void AddPlaceholderShelf(int shelfId)
+    {
+        // find all shelves, and their shelfid, and then add one shelf that has the an xanchor of 0, and a yanchor of 0, and a xsize of 165f, and a ysize of null
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            Debug.Log("Adding shelves");
+            // Get all shelves
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                dbCmd.CommandText = "INSERT INTO ShelvingUi (Xanchor, Yanchor, Xsize, Ysize, ShelfID) VALUES (0, 0, -165, null, @ShelfID)";
+                dbCmd.Parameters.Add(new SqliteParameter("@ShelfID", shelfId));
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    /**
+    * This gets every single shelfid in the database
+    */
     private List<int> GetAllShelfIds()
     {
         List<int> shelfIds = new List<int>();
@@ -125,27 +161,12 @@ public class ShelfService
         return shelfIds;
     }
 
-    void AddPlaceholderShelf(int shelfId)
-    {
-        // find all shelves, and their shelfid, and then add one shelf that has the an xanchor of 0, and a yanchor of 0, and a xsize of 165f, and a ysize of null
-        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
-        {
-            dbConnection.Open();
-            Debug.Log("Adding shelves");
-            // Get all shelves
-            using (IDbCommand dbCmd = dbConnection.CreateCommand())
-            {
-                dbCmd.CommandText = "INSERT INTO ShelvingUi (Xanchor, Yanchor, Xsize, Ysize, ShelfID) VALUES (0, 0, -165, null, @ShelfID)";
-                dbCmd.Parameters.Add(new SqliteParameter("@ShelfID", shelfId));
-                dbCmd.ExecuteNonQuery();
-            }
-            dbConnection.Close();
-        }
-    }
-
+    /**
+    * Returns a string that shows all the inventory on a shelf
+    */
     public string printNamesOfInventoryOnShelf(int shelfId)
     {
-        Debug.Log("shelfId: "+ shelfId);
+        Debug.Log("shelfId: " + shelfId);
         string result = "";
         List<int> ProductIds = new List<int>();
         List<string> inventoryNames = new List<string>();
@@ -172,7 +193,7 @@ public class ShelfService
             dbConnection.Close();
         }
 
-        using(IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
         {
             dbConnection.Open();
             //Debug.Log("Getting all shelf ids");
@@ -197,7 +218,7 @@ public class ShelfService
         //Debug.Log("inventoryNames: " + inventoryNames.Count);
         //Debug.Log("inventoryIds: " + inventoryIds.Count);
         // string should return both the inventory id and name
-        for(int i = 0; i < ProductIds.Count; i++)
+        for (int i = 0; i < ProductIds.Count; i++)
         {
             Debug.Log("ProductIds[i]: " + ProductIds[i]);
             result += ProductIds[i] + " " + inventoryNames[i] + " Inventory ID: " + inventoryIds[i] + "\n";
@@ -207,7 +228,9 @@ public class ShelfService
         return result;
     }
 
-
+    /**
+    * getProductIdsOnShelf gets all productids on a shelf
+    */
     public List<int> getProductIdsOnShelf(int shelfId)
     {
         List<int> ProductIds = new List<int>();
@@ -232,9 +255,13 @@ public class ShelfService
         return ProductIds;
     }
 
-    public List<int> findShelvesWithCategory(int categoryID){
+    /**
+    * findShelvesWithCategory returns a list of shelfids that have a desired categoryid
+    */
+    public List<int> findShelvesWithCategory(int categoryID)
+    {
         List<int> shelfIds = new List<int>();
-        Debug.Log("categoryID: " + categoryID);
+        //Debug.Log("categoryID: " + categoryID);
         using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
         {
             dbConnection.Open();
@@ -274,7 +301,12 @@ public class ShelfService
         }
         return shelfIds;
     }
-    public Vector3Int getShelfPosition(int shelfId){
+
+    /**
+    * getShelfPosition returns the Vector3Int position of a shelf
+    */
+    public Vector3Int getShelfPosition(int shelfId)
+    {
         Vector3Int shelfPosition = new Vector3Int();
         using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
         {
@@ -300,5 +332,44 @@ public class ShelfService
             dbConnection.Close();
         }
         return shelfPosition;
+    }
+
+    /**
+    * isShelfOfCategory returns true if the shelf at a given position has a desired categoryid
+    */
+    public bool isShelfOfCategory(Vector3Int position, int categoryID)
+    {
+        bool result = false;
+        using (IDbConnection dbConnection = _dbConnectionManager.CreateConnection())
+        {
+            dbConnection.Open();
+            //Debug.Log("Getting all shelf ids");
+            //find the shelf assosicated with the position, and then compare its categoryid to the categoryid passed in
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                dbCmd.CommandText = @"
+                SELECT DISTINCT Shelves.ShelfID
+                FROM Shelves
+                INNER JOIN Inventory ON Shelves.ShelfID = Inventory.ShelfID
+                INNER JOIN Products ON Inventory.ProductID = Products.ProductID
+                INNER JOIN ProductCategories ON Products.ProductID = ProductCategories.ProductID
+                WHERE Shelves.PosX = @PosX AND Shelves.PosY = @PosY AND Shelves.PosZ = @PosZ AND ProductCategories.CategoryID = @CategoryID";
+                dbCmd.Parameters.Add(new SqliteParameter("@PosX", position.x));
+                dbCmd.Parameters.Add(new SqliteParameter("@PosY", position.y));
+                dbCmd.Parameters.Add(new SqliteParameter("@PosZ", position.z));
+                dbCmd.Parameters.Add(new SqliteParameter("@CategoryID", categoryID));
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    //Debug.Log("Getting all inventory ids");
+                    //Debug.Log("reader: " + reader);
+                    while (reader.Read())
+                    {
+                        result = true;
+                    }
+                }
+            }
+            dbConnection.Close();
+        }
+        return result;
     }
 }

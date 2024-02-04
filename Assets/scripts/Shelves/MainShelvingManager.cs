@@ -84,6 +84,9 @@ public class MainShelvingManager : MonoBehaviour
         return false;
     }
 
+    /**
+    * Todo: Figure out why I made this function
+    */
     public string GetShelfTile(Vector3Int position){
         // TODO: ALTER THIS TO USE DATABASE
 
@@ -106,6 +109,9 @@ public class MainShelvingManager : MonoBehaviour
         return "no shelf";
     }
 
+    /**
+    * This function saves all the shelves in the database
+    */
     public void SaveAllShelvesData()
     {
         _shelfService.SaveAllShelvesData(ShelvingScriptsDictionary);
@@ -122,11 +128,16 @@ public class MainShelvingManager : MonoBehaviour
     }
 
 
+    /**
+    * This function loads all the shelves from the database
+    */
     void loadAllShelvesFromDataBase(){
         ShelvingScriptsDictionary = _shelfService.LoadAllShelvesData();
     }
 
-
+    /**
+    * This function prints all the shelves in the dictionary
+    */
     private void printShelves(){
         foreach (KeyValuePair<ShelfKey, ShelvingData> kvp in ShelvingScriptsDictionary)
         {
@@ -135,6 +146,9 @@ public class MainShelvingManager : MonoBehaviour
         }
     }
 
+    /**
+    * This function prints all the shelves in the dictionary in a verbose manner
+    */
     public void PrintShelvingScriptsDictionary() {
         if (ShelvingScriptsDictionary == null) {
             Debug.LogError("ShelvingScriptsDictionary is null.");
@@ -147,12 +161,17 @@ public class MainShelvingManager : MonoBehaviour
         }
     }
 
-    //This will print to tilemap a given self at the x y position a shelf tile
+    /**
+    * This will print to tilemap a given self at the x y position a shelf tile
+    */
     public void PrintShelf(ShelvingData shelf, Vector3Int position){
         tilemap.SetTile(position,shelfTile);
         tilemapFloor.SetTile(position,floorTile);
     }
 
+    /**
+    * Gets shelfId from a Vector3Int position
+    */
     public int getShelfId(Vector3Int position){
         ShelfKey key = new ShelfKey(position);
         int shelfId = 1;
@@ -180,6 +199,6 @@ public class MainShelvingManager : MonoBehaviour
 
         _categoryReach.visualizeAllReach();
     }
-
+    
 
 }
