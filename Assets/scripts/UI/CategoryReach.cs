@@ -77,7 +77,7 @@ public class CategoryReach : MonoBehaviour
         {
             float reachPercent = entry.Value / MaxReach;
             Color newColor = maxReachColor * reachPercent + minReachColor * (1 - reachPercent);
-
+            Debug.Log("VisualizeReach: entry.Key: " + entry.Key + " entry.Value: " + entry.Value + " reachPercent: " + reachPercent + " newColor: " + newColor);
             reachMap.SetTileFlags(entry.Key, TileFlags.None);
             reachMap.SetColor(entry.Key, newColor);
             reachMap.SetTileFlags(entry.Key, TileFlags.LockColor);

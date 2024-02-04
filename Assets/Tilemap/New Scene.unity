@@ -17543,7 +17543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reachMap: {fileID: 1656363085}
-  MaxReach: 0
+  MaxReach: 5
   maxReachColor: {r: 0.5283019, g: 0.01744394, b: 0.01744394, a: 0.54509807}
   minReachColor: {r: 0.5377358, g: 0.28662333, b: 0.28662333, a: 0.54509807}
   noReachColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0.050980393}
